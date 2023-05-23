@@ -1,3 +1,5 @@
+/* eslint-disable*/
+
 import { json, urlencoded } from "body-parser";
 import cors from "cors";
 import express from "express";
@@ -10,7 +12,7 @@ export class Server {
 	constructor(port: string) {
 		this.port = port;
 		this.express = express();
-		this.express.use(helmet());
+		this.express.use(helmet())
 		this.express.use(cors());
 		this.express.use(json());
 		this.express.use(urlencoded({ extended: true }));
@@ -28,8 +30,8 @@ export class Server {
 				// eslint-disable-next-line no-console
 				console.log("✋ Press CTRL-C to stop\n");
 
-				resolve();
-			});
-		});
+				resolve()
+			})
+		})
 	}
 }

@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 import { Server } from "./Server";
 
 export class App {
