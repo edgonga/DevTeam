@@ -1,9 +1,12 @@
 class CreateTaskController {
-    constructor (createTaskService: CreateTaskService){
+    constructor (createTask: CreateTask){
 
     }
+    // cREATEUserCase will be called with the service and repository implementations
 
     run(/* request */) {
-        this.createTaskService.create(/* request */)
+        this.createTask.execute(/* request */)
+
+        
     }
 }

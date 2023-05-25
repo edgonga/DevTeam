@@ -2,7 +2,7 @@
 
 import { v4 as uuidv4 } from "uuid"
 
-export class IDService {
+export class ID {
     IDgenerator(): string {
         const id = uuidv4()
 
