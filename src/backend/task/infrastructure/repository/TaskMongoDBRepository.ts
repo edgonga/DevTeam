@@ -1,4 +1,6 @@
+/* eslint-disable */
 import { TaskRepository } from "../../domain/repository/TaskRepository";
+import { Task } from "../../domain/entities/Task";
 
 export class TaskMongoDBRepository implements TaskRepository {
     save(): Promise<void> {

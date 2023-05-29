@@ -1,23 +1,15 @@
 /*  eslint-disable */
+export enum STATUS {
+    PENDING = 0,
+    ON_GOING = 1,
+    DONE = 2
+}
 
 export class Status {
 
-    private readonly status!: string | number
+    private readonly status: STATUS
 
-    constructor(status: number) {
-        switch(status) {
-            case 0:
-                this.status = "pending"
-                break
-            
-            case 1: 
-                this.status = "on-going"
-                break
-
-            case 2:
-                this.status = "done"
-                break
-        
-        }
+    constructor(status: STATUS) {
+        this.status = status
     }
 }

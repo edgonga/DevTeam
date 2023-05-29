@@ -1,12 +1,23 @@
-class CreateTaskController {
-    constructor (createTask: CreateTask){
+import { Request, Response } from "express";
 
-    }
-    // cREATEUserCase will be called with the service and repository implementations
+import { CreateTask } from "../../application/use-cases/CreateTask";
 
-    run(/* request */) {
-        this.createTask.execute(/* request */)
+export class CreateTaskController {
+	private readonly createTask: CreateTask;
 
-        
-    }
+	constructor(createTask: CreateTask) {
+		this.createTask = createTask;
+	}
+
+	run(req: Request, res: Response): Response {
+		const name = req.body.name as string;
+		const description = req.body.description as string;
+		const user = req.body.user as string;
+
+		this.createTask.execute(name, description, user);
+
+		return res.sendStatus(200);
+
+		//this.createTask.execute(description)
+	}
 }
