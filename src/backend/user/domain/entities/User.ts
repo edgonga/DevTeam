@@ -1,13 +1,19 @@
 /* eslint-disable */
 
-export class User {
-	private readonly name: string;
-	private password: string
+export interface UserProps {
+	readonly name: string;
+	password: Buffer
+}
 
-	constructor(name: string, password: string) {
+export class User implements UserProps {
+	name: string;
+	password: Buffer
+
+	constructor(name: string, password: Buffer) {
 		this.name = this.nameUserValidate(name);
 		this.password = this.passwordValidate(password)
 	}
+	
 
 	sayHello(): string {
 		return `Hello, I am ${this.name}`;
@@ -33,5 +39,3 @@ export class User {
 		}
 	}
 }
-
-export default User;
