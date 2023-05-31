@@ -10,9 +10,9 @@ export class CreateTaskController {
 	}
 
 	run(req: Request, res: Response): Response {
-		const name = req.body.name as string;
-		const description = req.body.description as string;
-		const user = req.body.user as string;
+		const name: string = req.body.name;
+		const description: string = req.body.description;
+		const user: string = req.body.user;
 
 		this.createTask.execute(name, description, user);
 
