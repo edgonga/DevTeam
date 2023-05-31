@@ -1,15 +1,14 @@
-/* eslint-disable */
-import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { Task } from "../../domain/entities/Task";
+import { TaskRepository } from "../../domain/repository/TaskRepository";
 
-export class TaskMongoDBRepository implements TaskRepository {
+export class TaskSQLRepository implements TaskRepository {
 	private readonly tasks: Array<Task | null>;
-	
+
 	constructor() {
-		this.tasks = []
+		this.tasks = [];
 	}
 
-	async save(): Promise<void> {
+	async save(task: Task): Promise<void> {
 		throw new Error("Method not implemented.");
 	}
 

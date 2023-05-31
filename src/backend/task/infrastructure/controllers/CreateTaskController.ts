@@ -17,7 +17,5 @@ export class CreateTaskController {
 		this.createTask.execute(name, description, user);
 
 		return res.sendStatus(200);
-
-		//this.createTask.execute(description)
 	}
 }
