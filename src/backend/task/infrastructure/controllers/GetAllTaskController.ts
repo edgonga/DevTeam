@@ -9,15 +9,13 @@ export class GetAllTaskController {
 		this.getAllTask = getAllTask;
 	}
 
-	run(req: Request, res: Response): Response {
-		// const id: number = req.body.id;
-		// const taskName: string = req.body.taskName
-		// const taskDescription: string = req.body.taskDescription
-		// const status: Status = req.body.status
-		// const userTaskCreator: string = req.body.userTaskCreator
+	async run(req: Request, res: Response): Promise<Response> {
+		try {
+			const retrieve = await this.getAllTask.retrieve();
 
-		const retrieve = this.getAllTask.retrieve();
-
-		return res.sendStatus(200);
+			return res.status(200).json(retrieve);
+		} catch (err) {
+			return res.status(500).json({ error: "Internal Server Error" });
+		}
 	}
 }
