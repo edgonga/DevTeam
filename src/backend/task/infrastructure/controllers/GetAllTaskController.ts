@@ -17,7 +17,6 @@ export class GetAllTaskController {
 		// const userTaskCreator: string = req.body.userTaskCreator
 
 		const retrieve = this.getAllTask.retrieve();
-		console.log(retrieve);
 
 		return res.sendStatus(200);
 	}

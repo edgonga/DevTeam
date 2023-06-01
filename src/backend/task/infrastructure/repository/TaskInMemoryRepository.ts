@@ -17,6 +17,8 @@ export class TaskInMemoryRepository implements TaskRepository {
 
 	async getAll(): Promise<Array<Task | null>> {
 		return new Promise((resolve) => {
+			// eslint-disable-next-line no-debugger
+			/* debugger; */
 			resolve(this.tasks);
 		});
 	}

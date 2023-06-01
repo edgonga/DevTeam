@@ -8,7 +8,10 @@ export class GetAllTask {
 		this.taskRepository = taskRepository;
 	}
 
-	async retrieve(): Promise<Array<Task | null>> {
-		return await this.taskRepository.getAll();
+	async retrieve(): Promise<(Task | null)[]> {
+		const tasks = await this.taskRepository.getAll();
+		console.log(tasks);
+
+		return tasks;
 	}
 }

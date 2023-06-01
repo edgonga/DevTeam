@@ -25,8 +25,8 @@ const createTask = new CreateTask(taskRepository);
 const createTaskController = new CreateTaskController(createTask);
 taskRouter.post("/task", (req: Request, res: Response) => createTaskController.run(req, res));
 
-const getAllTask = new GetAllTask(taskRepository)
-const getAllTaskController = new GetAllTaskController(getAllTask)
-taskRouter.post("/getAllTask", (req: Request, res: Response) => getAllTaskController.run(req, res))
+const getAllTask = new GetAllTask(taskRepository);
+const getAllTaskController = new GetAllTaskController(getAllTask);
+taskRouter.get("/getAllTask", (req: Request, res: Response) => getAllTaskController.run(req, res));
 
 export { taskRouter };
