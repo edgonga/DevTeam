@@ -9,6 +9,8 @@ export interface TaskProp {
 	taskDescription: string;
 	status: Status;
 	userTaskCreator: string;
+	startDate: Date;
+	endDate: null | Date
 }
 export class Task implements TaskProp {
 	readonly id: string;
@@ -16,18 +18,24 @@ export class Task implements TaskProp {
 	public taskDescription: string;
 	public status: Status;
 	public userTaskCreator: string;
+	readonly startDate: Date;
+	public endDate: Date | null;
 
 	constructor(
 		id: string,
 		taskName: string,
 		taskDescription: string,
 		status: Status,
-		userTaskCreator: string
+		userTaskCreator: string,
+		startDate: Date,
+		endDate = null
 	) {
 		this.id = id;
 		this.taskName = taskName;
 		this.taskDescription = taskDescription;
 		this.status = status;
 		this.userTaskCreator = userTaskCreator;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 }
