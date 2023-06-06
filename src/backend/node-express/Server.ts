@@ -4,8 +4,8 @@ import { json, urlencoded } from "body-parser";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
-import { taskRouter } from "../task/infrastructure/routers/CreateTaskRouter";
-import { userRouter } from "../user/infrastructure/routers/CreateUserRouter";
+import { taskRouter } from "../task/infrastructure/routers/TaskRouter";
+import { userRouter } from "../user/infrastructure/routers/UserRouter";
 
 export class Server {
 	private readonly express: express.Express;

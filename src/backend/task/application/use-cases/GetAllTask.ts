@@ -10,6 +10,7 @@ export class GetAllTask {
 
 	async retrieve(): Promise<(Task | null)[]> {
 		const tasks = await this.taskRepository.getAll();
+		// eslint-disable-next-line no-console
 		console.log(tasks);
 
 		return tasks;

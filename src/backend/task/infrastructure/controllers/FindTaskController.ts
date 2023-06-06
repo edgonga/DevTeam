@@ -9,14 +9,16 @@ export class FindTaskController {
 		this.findTask = findTask;
 	}
 
-	async run(req: Request, res: Response): Promise<Response> {
+	run(req: Request, res: Response): void {
 		const taskName: string = req.body.name;
-		try {
-			const retrieve = await this.findTask.search(taskName);
 
-			return res.status(200).json(retrieve);
-		} catch (err) {
-			return res.status(500).json({ error: "Internal Server Error" });
-		}
+		this.findTask
+			.search(taskName)
+			.then((retrieve) => {
+				res.status(200).json(retrieve);
+			})
+			.catch((err) => {
+				res.status(500).json({ error: "Internal Server Error" });
+			});
 	}
 }
