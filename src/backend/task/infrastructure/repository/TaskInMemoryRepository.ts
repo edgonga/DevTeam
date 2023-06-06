@@ -17,9 +17,19 @@ export class TaskInMemoryRepository implements TaskRepository {
 
 	async getAll(): Promise<Array<Task | null>> {
 		return new Promise((resolve) => {
-			// eslint-disable-next-line no-debugger
-			/* debugger; */
 			resolve(this.tasks);
+		});
+	}
+
+	async findOne(taskName: string): Promise<Task | null> {
+		return new Promise((resolve) => {
+			const task = this.tasks.find((task) => task?.taskName === taskName);
+
+			if (task === undefined) {
+				resolve(null);
+			} else {
+				resolve(task);
+			}
 		});
 	}
 }
