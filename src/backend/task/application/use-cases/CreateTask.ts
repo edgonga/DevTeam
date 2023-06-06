@@ -6,14 +6,14 @@ import { STATUS, Status } from "../../domain/value-object/Status";
 
 export class CreateTask {
 	private readonly taskRepository: TaskRepository;
-	private readonly taskID: string
-	public startDate: Date
+	private readonly taskID: string;
+	public startDate: Date;
 
 	constructor(taskRepository: TaskRepository) {
-		const idGenerator = new ID()
-		this.taskID = idGenerator.IDgenerator()
-		const dateGenerator = new currentDate()
-		this.startDate = dateGenerator.date
+		const idGenerator = new ID();
+		this.taskID = idGenerator.IDgenerator();
+		const dateGenerator = new currentDate();
+		this.startDate = dateGenerator.date;
 		this.taskRepository = taskRepository;
 	}
 

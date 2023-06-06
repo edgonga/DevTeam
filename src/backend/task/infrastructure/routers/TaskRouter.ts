@@ -1,10 +1,12 @@
 import express, { Request, Response } from "express";
 
 import { CreateTask } from "../../application/use-cases/CreateTask";
+import { DeleteTask } from "../../application/use-cases/DeleteTask";
 import { FindTask } from "../../application/use-cases/FindTask";
 import { GetAllTask } from "../../application/use-cases/GetAllTask";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { CreateTaskController } from "../controllers/CreateTaskController";
+import { DeleteTaskController } from "../controllers/DeleteTaskController";
 import { FindTaskController } from "../controllers/FindTaskController";
 import { GetAllTaskController } from "../controllers/GetAllTaskController";
 import { TaskInMemoryRepository } from "../repository/TaskInMemoryRepository";
@@ -35,5 +37,9 @@ const findTask = new FindTask(taskRepository);
 const findTaskController = new FindTaskController(findTask);
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 taskRouter.get("/findTask", (req: Request, res: Response) => findTaskController.run(req, res));
+
+const deleteTask = new DeleteTask(taskRepository);
+const deleteTaskController = new DeleteTaskController(deleteTask);
+taskRouter.get("/deleteTask", (req: Request, res: Response) => deleteTaskController.run(req, res));
 
 export { taskRouter };

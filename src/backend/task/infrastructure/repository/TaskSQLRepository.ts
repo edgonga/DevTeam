@@ -8,6 +8,10 @@ export class TaskSQLRepository implements TaskRepository {
 		this.tasks = [];
 	}
 
+	async eliminateOne(taskName: string): Promise<(Task | null)[]> {
+		throw new Error("Method not implemented.");
+	}
+
 	async findOne(taskName: string): Promise<Task | null> {
 		throw new Error("Method not implemented.");
 	}

@@ -2,7 +2,7 @@ import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 
 export class TaskInMemoryRepository implements TaskRepository {
-	private readonly tasks: Array<Task | null>;
+	private tasks: Array<Task | null>;
 
 	constructor() {
 		this.tasks = [];
@@ -30,6 +30,13 @@ export class TaskInMemoryRepository implements TaskRepository {
 			} else {
 				resolve(task);
 			}
+		});
+	}
+
+	async eliminateOne(taskName: string): Promise<void> {
+		return new Promise((resolve) => {
+			this.tasks = this.tasks.filter((task) => task?.taskName !== taskName);
+			resolve();
 		});
 	}
 }

@@ -8,6 +8,9 @@ export class TaskMongoDBRepository implements TaskRepository {
 	constructor() {
 		this.tasks = []
 	}
+	eliminateOne(taskName: string): Promise<(Task | null)[]> {
+		throw new Error("Method not implemented.");
+	}
 	findOne(taskName: string): Promise<Task | null> {
 		throw new Error("Method not implemented.");
 	}
