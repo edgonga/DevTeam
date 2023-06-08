@@ -1,27 +1,25 @@
-/* eslint-disable */
+/* eslint-disable*/
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { Task } from "../../domain/entities/Task";
 import { MongoClient, Collection } from "mongodb";
 
 export class TaskMongoDBRepository implements TaskRepository {
-<<<<<<< Updated upstream
-	private readonly tasks: Array<Task | null>;
-	
-	constructor() {
-		this.tasks = []
-	}
-
-	async save(): Promise<void> {
-		throw new Error("Method not implemented.");
-	}
-=======
   private collection: Collection | null = null;
->>>>>>> Stashed changes
 
   constructor() {
-    this.connectToMongo().then((collection) => {
-      this.collection = collection;
-    });
+    this.initialize();
+  }
+
+
+  private async initialize(): Promise<void> {
+
+    try {
+      this.collection = await this.connectToMongo();
+      console.log("mongo db connected", this.collection);
+
+    } catch (error) {
+      console.error("Failed to initialize MongoDB collection:", error);
+    }
   }
 
   private async connectToMongo(): Promise<Collection> {
@@ -50,6 +48,7 @@ export class TaskMongoDBRepository implements TaskRepository {
     }
 
     const tasks = await this.collection.find().toArray();
+    
     return tasks;
   }
 }

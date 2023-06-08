@@ -17,6 +17,7 @@ if (db === "in-memory") {
 
 if (db === "mongo") {
 	taskRepository = new TaskMongoDBRepository();
+	console.log("new mongo db");
 }
 
 const createTask = new CreateTask(taskRepository);
