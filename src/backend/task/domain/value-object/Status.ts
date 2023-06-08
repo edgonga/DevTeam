@@ -7,9 +7,13 @@ export enum STATUS {
 
 export class Status {
 
-    private readonly status: STATUS
+    private status: STATUS
 
     constructor(status: STATUS) {
+        this.status = status
+    }
+
+    public setStatus(status: STATUS): void {
         this.status = status
     }
 }

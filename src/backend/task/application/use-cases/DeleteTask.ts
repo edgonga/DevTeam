@@ -7,7 +7,7 @@ export class DeleteTask {
 		this.taskRepository = taskRepository;
 	}
 
-	eliminate(taskName: string): void {
+	eliminate(taskName: string): void | null {
 		this.taskRepository.eliminateOne(taskName);
 		// eslint-disable-next-line no-console
 		console.log(`*---- Task deleted ----*

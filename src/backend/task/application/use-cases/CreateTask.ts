@@ -17,7 +17,7 @@ export class CreateTask {
 		this.taskRepository = taskRepository;
 	}
 
-	execute(name: string, description: string, user: string): void {
+	execute(name: string, description: string, user: string): void | null {
 		const status = new Status(STATUS.PENDING);
 
 		const task = new Task(this.taskID, name, description, status, user, this.startDate);
