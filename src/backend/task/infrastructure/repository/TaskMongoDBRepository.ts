@@ -15,7 +15,7 @@ export class TaskMongoDBRepository implements TaskRepository {
 
     try {
       this.collection = await this.connectToMongo();
-      console.log("mongo db connected", this.collection);
+      console.log("mongo db connected");
 
     } catch (error) {
       console.error("Failed to initialize MongoDB collection:", error);
@@ -23,7 +23,7 @@ export class TaskMongoDBRepository implements TaskRepository {
   }
 
   private async connectToMongo(): Promise<Collection> {
-    const uri = "mongodb://localhost:27001/";
+    const uri = process?.env.MONGO_URI ?? "mongodb://localhost:27017/";
     const dbName = "devTeam";
     const collectionName = "tasks";
 
