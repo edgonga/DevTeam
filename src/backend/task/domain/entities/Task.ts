@@ -1,5 +1,4 @@
 import { Status } from "../value-object/Status";
-import { ID } from "../../../dependencies/IDGenerator";
 
 // properties: id, task_name, task_description, status (enum: pending, on-going, done), user_task_creation
 
@@ -10,7 +9,7 @@ export interface TaskProp {
 	status: Status;
 	userTaskCreator: string;
 	startDate: Date;
-	endDate: null | Date
+	endDate: null | Date;
 }
 export class Task implements TaskProp {
 	readonly id: string;
