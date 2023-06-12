@@ -46,6 +46,8 @@ taskRouter.get("/deleteTask", (req: Request, res: Response) => deleteTaskControl
 
 const updateTask = new UpdateTask(taskRepository);
 const updateTaskController = new UpdateTaskController(updateTask);
-taskRouter.put("/updateTask/:taskName", (req: Request, res: Response) => updateTaskController.run(req, res));
+taskRouter.put("/updateTask/:taskName", (req: Request, res: Response) =>
+	updateTaskController.run(req, res)
+);
 
 export { taskRouter };
