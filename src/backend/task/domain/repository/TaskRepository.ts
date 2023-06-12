@@ -5,5 +5,5 @@ export interface TaskRepository {
 	getAll(): Promise<Array<Task | null>>;
 	findOne(taskName: string): Promise<Task | null>;
 	eliminateOne(taskName: string): Promise<void | null>;
-	updateOne(task: Task | null): void | null;
+	updateOne(task: Task | null): Promise<void | null>;
 }

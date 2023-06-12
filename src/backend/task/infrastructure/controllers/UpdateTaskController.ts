@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import { UpdateTask } from "../../application/use-cases/UpdateTask";
+import { Status } from "../../domain/value-object/Status";
 
 export class UpdateTaskController {
 	private readonly updateTask: UpdateTask;
@@ -9,19 +10,17 @@ export class UpdateTaskController {
 		this.updateTask = updateTask;
 	}
 
-	run(req: Request, res: Response): void {
+	async run(req: Request, res: Response): Promise<void> {
 		const taskName: string = req.params.taskName;
+		const newTaskName: string = req.body.name;
+		const newTaskDescr: string = req.body.description;
+		const newTaskStatus: Status = req.body.status;
 
-		this.updateTask
-			.execute(taskName)
-			.then(() => {
-				res.status(200).json({ message: `The task with name: ${taskName} has been updated` });
-				const newTaskName = req.body.name;
-				const newTaskDescr = req.body.description;
-				const newTaskStatus = req.body.status;
-			})
-			.catch((err) => {
-				res.status(500).json({ error: "Internal Server Error" });
-			});
+		try {
+			await this.updateTask.execute(taskName, newTaskName, newTaskDescr, newTaskStatus);
+			res.status(200).json({ message: `The task with name: ${taskName} has been updated` });
+		} catch (error) {
+			res.status(500).json({ error: "Internal Server Error" });
+		}
 	}
 }
