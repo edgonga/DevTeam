@@ -37,5 +37,12 @@ export class Task implements TaskProp {
 		this.userTaskCreator = userTaskCreator;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.validate()
+	}
+
+	private validate(): void | Error {
+		if (!this.id || !this.taskName || !this.status || !this.userTaskCreator || !this.startDate) {
+			throw new Error("Invalid task properties")
+		}
 	}
 }

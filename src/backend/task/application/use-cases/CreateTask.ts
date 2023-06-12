@@ -6,22 +6,20 @@ import { STATUS, Status } from "../../domain/value-object/Status";
 
 export class CreateTask {
 	private readonly taskRepository: TaskRepository;
-	private readonly taskID: string;
-	public startDate: Date;
 
 	constructor(taskRepository: TaskRepository) {
-		const idGenerator = new ID();
-		this.taskID = idGenerator.IDgenerator();
-		const dateGenerator = new currentDate();
-		this.startDate = dateGenerator.date;
 		this.taskRepository = taskRepository;
 	}
 
-	execute(name: string, description: string, user: string): void {
+	execute(name: string, description: string, user: string): Promise<void> {
+		const idGenerator = new ID();
+		const taskID = idGenerator.IDgenerator();
+		const dateGenerator = new currentDate();
+		const startDate = dateGenerator.date;
 		const status = new Status(STATUS.PENDING);
 
-		const task = new Task(this.taskID, name, description, status, user, this.startDate);
+		const task = new Task(taskID, name, description, status, user, startDate);
 
-		this.taskRepository.save(task);
+		return this.taskRepository.save(task);
 	}
 }
