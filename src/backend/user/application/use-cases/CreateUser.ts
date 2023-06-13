@@ -8,8 +8,12 @@ export class CreateUser {
 		this.userRespository = userRespository;
 	}
 
-	execute(name: string, password: Buffer): void {
-		const user = new User(name, password);
-		this.userRespository.save(user);
+	async execute(name: string, password: string): Promise<void> {
+		try {
+			const user = new User(name, password);
+			await this.userRespository.save(user);
+		} catch (err) {
+			throw new Error("Failed to create the User");
+		}
 	}
 }

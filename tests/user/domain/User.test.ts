@@ -1,13 +1,14 @@
-import User from "../../../../src/user/domain/entities/User";
+import { User } from "../../../src/backend/user/domain/entities/User";
 
-describe("User", () => {
-	test("given a User with a name passed by contructor, when its called to sayHello method, should return a greeting message", () => {
-		const name = "Pepito";
-		const user = new User(name);
-		const expectedGreeting = "Hello, I am Pepito";
+test("a User is created correctly", () => {
+	const user = new User("Left Cap", "bob007");
+	expect(user.name).toBe("Left Cap");
+	expect(user.password).toBe("bob007");
+});
 
-		const greeting = user.sayHello();
-
-		expect(greeting).toBe(expectedGreeting);
-	});
+test("if parameters are missing or lenght is not the minimum, an error is returned", () => {
+	expect(() => new User("", "")).toThrowError("Invalid User name");
+	expect(() => new User("Hugh", "")).toThrowError("Invalid password");
+	expect(() => new User("Left Cap", "11")).toThrowError("Invalid password");
+	expect(() => new User("w", "poppppp")).toThrowError("Invalid User name");
 });

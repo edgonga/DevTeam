@@ -1,12 +1,12 @@
 import moment from "moment-timezone";
 
-function getTimezone(date: Date): boolean {
+export function getTimezone(date: Date): boolean {
 	const momentDate = moment(date);
 	const isDayLightSavingTime = momentDate.isDST();
 
 	return isDayLightSavingTime;
 }
-export class currentDate {
+export class CurrentDate {
 	readonly date!: Date;
 
 	constructor() {

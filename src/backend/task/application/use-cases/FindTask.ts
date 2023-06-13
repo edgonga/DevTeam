@@ -9,10 +9,12 @@ export class FindTask {
 	}
 
 	async search(taskName: string): Promise<Task | null> {
-		const task = await this.taskRepository.findOne(taskName);
-		// eslint-disable-next-line no-console
-		console.log(task);
+		try {
+			const task = await this.taskRepository.findOne(taskName);
 
-		return task;
+			return task;
+		} catch (error) {
+			throw new Error(`Failed to search for the task`);
+		}
 	}
 }

@@ -1,7 +1,4 @@
 import { Status } from "../value-object/Status";
-import { ID } from "../../../dependencies/IDGenerator";
-
-// properties: id, task_name, task_description, status (enum: pending, on-going, done), user_task_creation
 
 export interface TaskProp {
 	readonly id: string;
@@ -10,7 +7,7 @@ export interface TaskProp {
 	status: Status;
 	userTaskCreator: string;
 	startDate: Date;
-	endDate: null | Date
+	endDate: null | Date;
 }
 export class Task implements TaskProp {
 	readonly id: string;
@@ -37,12 +34,12 @@ export class Task implements TaskProp {
 		this.userTaskCreator = userTaskCreator;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.validate()
+		this.validate();
 	}
 
 	private validate(): void | Error {
-		if (!this.id || !this.taskName || !this.status || !this.userTaskCreator || !this.startDate) {
-			throw new Error("Invalid task properties")
+		if (!this.id || !this.taskName || !this.userTaskCreator) {
+			throw new Error("Invalid task properties");
 		}
 	}
 }

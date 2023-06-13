@@ -1,13 +1,13 @@
 export interface UserProps {
 	readonly name: string;
-	password: Buffer;
+	password: string;
 }
 
 export class User implements UserProps {
-	name: string;
-	password: Buffer;
+	readonly name: string;
+	password: string;
 
-	constructor(name: string, password: Buffer) {
+	constructor(name: string, password: string) {
 		this.name = this.nameUserValidate(name);
 		this.password = this.passwordValidate(password);
 	}
@@ -20,17 +20,16 @@ export class User implements UserProps {
 		return { name: this.name };
 	}
 
-	passwordValidate(password: Buffer): Buffer {
-		const passwordString = password.toString("utf8");
-		if (passwordString.length < 4) {
+	private passwordValidate(password: string): string {
+		if (password.length < 4) {
 			throw new Error(`Invalid password`);
 		} else {
 			return password;
 		}
 	}
 
-	nameUserValidate(userName: string): string {
-		if (!userName && userName.length < 2) {
+	private nameUserValidate(userName: string): string {
+		if (!userName || userName.length < 2) {
 			throw new Error(`Invalid User name`);
 		} else {
 			return userName;
