@@ -10,10 +10,11 @@ export class FindTaskController {
 	}
 
 	run(req: Request, res: Response): void {
-		const name: string = req.body.name;
+		const id: string = req.params.id;
+		const url = `localhost:8000/updateTask/${id}`;
 
 		this.findTask
-			.search(name)
+			.search(id)
 			.then((retrieve) => {
 				res.status(200).json(retrieve);
 			})
