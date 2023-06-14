@@ -1,14 +1,16 @@
+import { Name } from "../value-objects/Name";
+
 export interface UserProps {
-	readonly name: string;
+	readonly name: Name;
 	password: Buffer;
 }
 
 export class User implements UserProps {
-	name: string;
+	name: Name;
 	password: Buffer;
 
-	constructor(name: string, password: Buffer) {
-		this.name = this.nameUserValidate(name);
+	constructor(name: Name, password: Buffer) {
+		this.name = name;
 		this.password = this.passwordValidate(password);
 	}
 
@@ -17,7 +19,7 @@ export class User implements UserProps {
 	}
 
 	toPrimitive(): { name: string } {
-		return { name: this.name };
+		return { name: this.name.getName() };
 	}
 
 	passwordValidate(password: Buffer): Buffer {
@@ -26,14 +28,6 @@ export class User implements UserProps {
 			throw new Error(`Invalid password`);
 		} else {
 			return password;
-		}
-	}
-
-	nameUserValidate(userName: string): string {
-		if (!userName && userName.length < 2) {
-			throw new Error(`Invalid User name`);
-		} else {
-			return userName;
 		}
 	}
 }

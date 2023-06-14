@@ -21,6 +21,7 @@ export class UpdateTaskController {
 			res.status(200).json({ message: `The task with name: ${taskName} has been updated` });
 		} catch (error) {
 			res.status(500).json({ error: "Internal Server Error" });
+			console.error(error);
 		}
 	}
 }

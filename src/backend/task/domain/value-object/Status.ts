@@ -16,4 +16,8 @@ export class Status {
     public setStatus(status: Status): void {
         this.status = status.status
     }
+    
+    getStatus(): STATUS {
+        return this.status
+    }
 }

@@ -3,6 +3,7 @@ import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { Task } from "../../domain/entities/Task";
 import { MongoClient, Collection } from "mongodb";
 import { Console } from "console";
+import { Status } from "../../domain/value-object/Status";
 
 export class TaskMongoDBRepository implements TaskRepository {
 	
@@ -40,18 +41,20 @@ export class TaskMongoDBRepository implements TaskRepository {
     if (!this.collection) {
       throw new Error("MongoDB collection is not initialized");
     }
-
-    await this.collection.insertOne(task);
+    const taskDTO = task.toDTO()
+    await this.collection.insertOne(taskDTO);
   }  
 
   async getAll(): Promise<Array<Task | null>> {
     if (!this.collection) {
       throw new Error("MongoDB collection is not initialized");
     }
+    const taskList: Array<Task | null> = []
 
     const tasks = await this.collection.find().toArray();
-    
-    return tasks;
+
+    tasks.forEach(task => taskList.push(new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)))
+    return taskList;
   }
 
   async findOne(taskName: string): Promise<Task | null> {
@@ -72,31 +75,34 @@ export class TaskMongoDBRepository implements TaskRepository {
     this.collection.deleteOne({"taskName" : taskName});
   }
 
-  async updateOne(task: Task | null): Promise<void | null> {
-    if (!this.collection){
-      throw new Error("MongoDB collection is not initialazed");
+  async updateOne(taskId: string, task: Task | null): Promise<void | null> {
+    if (!this.collection) {
+      throw new Error("MongoDB collection is not initialized");
     }
-
+  
     if (task === null) {
       throw new Error("Task is null");
     }
+
+    console.log("Task NO updated:", task);
   
     try {
-      const filter = { "taskName" : task.taskName };
-      const update = {
-        $set: {
-          "taskName": task.taskName,
-          "taskDescription": task.taskDescription,
-          "status": task.status
-        },
-      };
+      console.log('taskId ->>>>>>>>>' + taskId)
+      const updatedTask = await this.collection.findOneAndUpdate(
+        { "taskName": taskId },
+        {
+          $set: {
+            taskName: task.taskName,
+            taskDescription: 'hola MUNDO',
+            status: task.status,
+          },
+        }
+      );
   
-      await this.collection.updateOne(filter, update);
-      console.log(filter.taskName + update)
-      
-  
+      console.log("Task updated:", updatedTask);
     } catch (error) {
       throw new Error(`Failed to update task: ${error}`);
     }
   }
+  
 }

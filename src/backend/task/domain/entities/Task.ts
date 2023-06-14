@@ -1,4 +1,4 @@
-import { Status } from "../value-object/Status";
+import { STATUS, Status } from "../value-object/Status";
 
 // properties: id, task_name, task_description, status (enum: pending, on-going, done), user_task_creation
 
@@ -36,5 +36,25 @@ export class Task implements TaskProp {
 		this.userTaskCreator = userTaskCreator;
 		this.startDate = startDate;
 		this.endDate = endDate;
+	}
+
+	toDTO(): {
+		id: string;
+		taskName: string;
+		taskDescription: string;
+		status: STATUS;
+		userTaskCreator: string;
+		startDate: Date;
+		endDate: null | Date;
+	} {
+		return {
+			id: this.id,
+			taskName: this.taskName,
+			taskDescription: this.taskDescription,
+			status: this.status.getStatus(),
+			userTaskCreator: this.userTaskCreator,
+			startDate: this.startDate,
+			endDate: this.endDate,
+		};
 	}
 }

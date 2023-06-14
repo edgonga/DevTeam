@@ -20,8 +20,8 @@ export class UpdateTask {
 			task.taskName = newTaskName;
 			task.taskDescription = newTaskDescr;
 			task.status = newTaskStatus;
-
-			await this.taskRepository.updateOne(task);
+			console.log(task.taskName, "   ", task.taskDescription);
+			await this.taskRepository.updateOne(taskName, task);
 		} else {
 			throw new Error(`Task with name ${taskName} not found`);
 		}
