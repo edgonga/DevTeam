@@ -1,4 +1,6 @@
-import { Status } from "../value-object/Status";
+import { STATUS, Status } from "../value-object/Status";
+
+// properties: id, task_name, task_description, status (enum: pending, on-going, done), user_task_creation
 
 export interface TaskProp {
 	readonly id: string;
@@ -41,5 +43,26 @@ export class Task implements TaskProp {
 		if (!this.id || !this.taskName || !this.userTaskCreator) {
 			throw new Error("Invalid task properties");
 		}
+	}
+
+	// eslint-disable-next-line @typescript-eslint/member-ordering
+	public toDTO(): {
+		id: string;
+		taskName: string;
+		taskDescription: string;
+		status: STATUS;
+		userTaskCreator: string;
+		startDate: Date;
+		endDate: null | Date;
+	} {
+		return {
+			id: this.id,
+			taskName: this.taskName,
+			taskDescription: this.taskDescription,
+			status: this.status.getStatus(),
+			userTaskCreator: this.userTaskCreator,
+			startDate: this.startDate,
+			endDate: this.endDate,
+		};
 	}
 }

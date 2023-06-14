@@ -1,5 +1,6 @@
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
+import { STATUS } from "../../domain/value-object/Status";
 
 export class TaskInMemoryRepository implements TaskRepository {
 	private tasks: Array<Task | null>;
@@ -33,10 +34,25 @@ export class TaskInMemoryRepository implements TaskRepository {
 		});
 	}
 
-	async eliminateOne(taskName: string): Promise<void> {
+	async eliminateOne(taskName: string): Promise<void | null> {
 		return new Promise((resolve) => {
 			this.tasks = this.tasks.filter((task) => task?.taskName !== taskName);
 			resolve();
 		});
+	}
+
+	updateOne(task: Task): void | null {
+		task.taskName = newTaskName;
+		task.taskDescription = newTaskDescr;
+
+		if (newTaskStatus === 0) {
+			task.status.setStatus(STATUS.PENDING);
+		}
+		if (newTaskStatus === 1) {
+			task.status.setStatus(STATUS.ON_GOING);
+		}
+		if (newTaskStatus === 2) {
+			task.status.setStatus(STATUS.DONE);
+		}
 	}
 }
