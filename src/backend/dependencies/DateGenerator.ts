@@ -7,17 +7,12 @@ export function getTimezone(date: Date): boolean {
 	return isDayLightSavingTime;
 }
 export class DateGenerator {
-	readonly date!: Date;
-
-	constructor() {
+	generate(): Date {
 		const currentDate = new Date();
 		const dayLightSavingTime = getTimezone(currentDate);
-		if (dayLightSavingTime) {
-			currentDate.setUTCHours(currentDate.getUTCHours() + 2);
-			this.date = currentDate;
-		} else {
-			currentDate.setUTCHours(currentDate.getUTCHours() + 1);
-			this.date = currentDate;
-		}
+
+		currentDate.setUTCHours(currentDate.getUTCHours() + (dayLightSavingTime ? 2 : 1));
+
+		return currentDate;
 	}
 }

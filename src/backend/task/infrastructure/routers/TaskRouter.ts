@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 
+import { DateGenerator } from "../../../dependencies/DateGenerator";
 import { IDGenerator } from "../../../dependencies/IDGenerator";
 import { CreateTask } from "../../application/use-cases/CreateTask";
 import { DeleteTask } from "../../application/use-cases/DeleteTask";
@@ -28,7 +29,7 @@ if (db === "mongo") {
 	taskRepository = new TaskMongoDBRepository();
 }
 
-const createTask = new CreateTask(taskRepository, new IDGenerator());
+const createTask = new CreateTask(taskRepository, new IDGenerator(), new DateGenerator());
 const createTaskController = new CreateTaskController(createTask);
 taskRouter.post("/task", (req: Request, res: Response) => createTaskController.run(req, res));
 

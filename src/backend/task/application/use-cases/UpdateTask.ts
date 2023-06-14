@@ -9,21 +9,21 @@ export class UpdateTask {
 	}
 
 	async execute(
-		taskName: string,
+		name: string,
 		newTaskName: string,
 		newTaskDescr: string,
 		newTaskStatus: Status
 	): Promise<void> {
-		const task = await this.taskRepository.findOne(taskName);
+		const task = await this.taskRepository.findOne(name);
 
 		if (task) {
 			task.taskName = newTaskName;
 			task.taskDescription = newTaskDescr;
 			task.status = newTaskStatus;
 			console.log(task.taskName, "   ", task.taskDescription);
-			await this.taskRepository.updateOne(taskName, task);
+			await this.taskRepository.updateOne(name, task);
 		} else {
-			throw new Error(`Task with name ${taskName} not found`);
+			throw new Error(`Task with name ${name} not found`);
 		}
 	}
 }

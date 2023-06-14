@@ -4,8 +4,8 @@ import { STATUS, Status } from "../value-object/Status";
 
 export interface TaskProp {
 	readonly id: string;
-	taskName: string;
-	taskDescription: string;
+	name: string;
+	description: string;
 	status: Status;
 	userTaskCreator: string;
 	startDate: Date;
@@ -13,8 +13,8 @@ export interface TaskProp {
 }
 export class Task implements TaskProp {
 	readonly id: string;
-	public taskName: string;
-	public taskDescription: string;
+	public name: string;
+	public description: string;
 	public status: Status;
 	public userTaskCreator: string;
 	readonly startDate: Date;
@@ -22,16 +22,16 @@ export class Task implements TaskProp {
 
 	constructor(
 		id: string,
-		taskName: string,
-		taskDescription: string,
+		name: string,
+		description: string,
 		status: Status,
 		userTaskCreator: string,
 		startDate: Date,
 		endDate = null
 	) {
 		this.id = id;
-		this.taskName = taskName;
-		this.taskDescription = taskDescription;
+		this.name = name;
+		this.description = description;
 		this.status = status;
 		this.userTaskCreator = userTaskCreator;
 		this.startDate = startDate;
@@ -40,7 +40,7 @@ export class Task implements TaskProp {
 	}
 
 	private validate(): void | Error {
-		if (!this.id || !this.taskName || !this.userTaskCreator) {
+		if (!this.id || !this.name || !this.userTaskCreator) {
 			throw new Error("Invalid task properties");
 		}
 	}
@@ -48,8 +48,8 @@ export class Task implements TaskProp {
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	public toDTO(): {
 		id: string;
-		taskName: string;
-		taskDescription: string;
+		name: string;
+		description: string;
 		status: STATUS;
 		userTaskCreator: string;
 		startDate: Date;
@@ -57,8 +57,8 @@ export class Task implements TaskProp {
 	} {
 		return {
 			id: this.id,
-			taskName: this.taskName,
-			taskDescription: this.taskDescription,
+			name: this.name,
+			description: this.description,
 			status: this.status.getStatus(),
 			userTaskCreator: this.userTaskCreator,
 			startDate: this.startDate,

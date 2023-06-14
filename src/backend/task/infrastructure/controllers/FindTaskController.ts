@@ -10,10 +10,10 @@ export class FindTaskController {
 	}
 
 	run(req: Request, res: Response): void {
-		const taskName: string = req.body.name;
+		const name: string = req.body.name;
 
 		this.findTask
-			.search(taskName)
+			.search(name)
 			.then((retrieve) => {
 				res.status(200).json(retrieve);
 			})

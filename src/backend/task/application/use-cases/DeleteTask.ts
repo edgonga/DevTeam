@@ -7,15 +7,15 @@ export class DeleteTask {
 		this.taskRepository = taskRepository;
 	}
 
-	async eliminate(taskName: string): Promise<void> {
-		if (!taskName) {
+	async eliminate(name: string): Promise<void> {
+		if (!name) {
 			throw new Error("Invalid taskName");
 		}
 		try {
-			await this.taskRepository.eliminateOne(taskName);
+			await this.taskRepository.eliminateOne(name);
 			// eslint-disable-next-line no-console
 			console.log(`*---- Task deleted ----*
-        	Task Name: ${taskName}`);
+        	Task Name: ${name}`);
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(`Error deleting task: ${err}`);

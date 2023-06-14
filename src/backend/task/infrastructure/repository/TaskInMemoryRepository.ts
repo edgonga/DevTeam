@@ -22,9 +22,9 @@ export class TaskInMemoryRepository implements TaskRepository {
 		});
 	}
 
-	async findOne(taskName: string): Promise<Task | null> {
+	async findOne(name: string): Promise<Task | null> {
 		return new Promise((resolve) => {
-			const task = this.tasks.find((task) => task?.taskName === taskName);
+			const task = this.tasks.find((task) => task?.name === name);
 
 			if (task === undefined) {
 				resolve(null);
@@ -34,24 +34,24 @@ export class TaskInMemoryRepository implements TaskRepository {
 		});
 	}
 
-	async eliminateOne(taskName: string): Promise<void | null> {
+	async eliminateOne(name: string): Promise<void | null> {
 		return new Promise((resolve) => {
-			this.tasks = this.tasks.filter((task) => task?.taskName !== taskName);
+			this.tasks = this.tasks.filter((task) => task?.name !== name);
 			resolve();
 		});
 	}
 
 	updateOne(task: Task): void | null {
-		task.taskName = newTaskName;
-		task.taskDescription = newTaskDescr;
+		task.name = newTask;
+		task.description = newTaskDescr;
 
-		if (newTaskStatus === 0) {
+		if (newStatus === 0) {
 			task.status.setStatus(STATUS.PENDING);
 		}
-		if (newTaskStatus === 1) {
+		if (newStatus === 1) {
 			task.status.setStatus(STATUS.ON_GOING);
 		}
-		if (newTaskStatus === 2) {
+		if (newStatus === 2) {
 			task.status.setStatus(STATUS.DONE);
 		}
 	}

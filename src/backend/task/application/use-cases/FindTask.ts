@@ -8,9 +8,9 @@ export class FindTask {
 		this.taskRepository = taskRepository;
 	}
 
-	async search(taskName: string): Promise<Task | null> {
+	async search(name: string): Promise<Task | null> {
 		try {
-			const task = await this.taskRepository.findOne(taskName);
+			const task = await this.taskRepository.findOne(name);
 
 			return task;
 		} catch (error) {

@@ -10,9 +10,9 @@ export class DeleteTaskController {
 	}
 
 	run(req: Request, res: Response): Response {
-		const taskName: string = req.body.name;
+		const name: string = req.body.name;
 
-		this.deleteTask.eliminate(taskName);
+		this.deleteTask.eliminate(name);
 
 		return res.sendStatus(200);
 	}

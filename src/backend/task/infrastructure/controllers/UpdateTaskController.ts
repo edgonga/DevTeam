@@ -11,14 +11,14 @@ export class UpdateTaskController {
 	}
 
 	async run(req: Request, res: Response): Promise<void> {
-		const taskName: string = req.params.taskName;
-		const newTaskName: string = req.body.name;
-		const newTaskDescr: string = req.body.description;
-		const newTaskStatus: Status = req.body.status;
+		const name: string = req.params.taskName;
+		const newName: string = req.body.name;
+		const newDescr: string = req.body.description;
+		const newStatus: Status = req.body.status;
 
 		try {
-			await this.updateTask.execute(taskName, newTaskName, newTaskDescr, newTaskStatus);
-			res.status(200).json({ message: `The task with name: ${taskName} has been updated` });
+			await this.updateTask.execute(name, newName, newDescr, newStatus);
+			res.status(200).json({ message: `The task with name: ${name} has been updated` });
 		} catch (error) {
 			res.status(500).json({ error: "Internal Server Error" });
 			console.error(error);
