@@ -13,6 +13,7 @@ import { GetAllTaskController } from "../controllers/GetAllTaskController";
 import { UpdateTaskController } from "../controllers/UpdateTaskController";
 import { TaskInMemoryRepository } from "../repository/TaskInMemoryRepository";
 import { TaskMongoDBRepository } from "../repository/TaskMongoDBRepository";
+import { TaskMySQLRepository } from "../repository/TaskSQLRepository";
 
 const taskRouter = express.Router();
 const db = process.argv[2];
@@ -25,6 +26,10 @@ if (db === "in-memory") {
 
 if (db === "mongo") {
 	taskRepository = new TaskMongoDBRepository();
+}
+
+if (db === "mysql") {
+	taskRepository = new TaskMySQLRepository();
 }
 
 const createTask = new CreateTask(taskRepository);
