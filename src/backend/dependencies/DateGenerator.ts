@@ -6,7 +6,7 @@ export function getTimezone(date: Date): boolean {
 
 	return isDayLightSavingTime;
 }
-export class CurrentDate {
+export class DateGenerator {
 	readonly date!: Date;
 
 	constructor() {

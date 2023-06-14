@@ -9,7 +9,7 @@ export class Name {
 		this.name = name;
 	}
 
-	getName(): string {
+	public getName(): string {
 		return this.name;
 	}
 }
