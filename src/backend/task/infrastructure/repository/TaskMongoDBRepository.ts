@@ -61,10 +61,14 @@ export class TaskMongoDBRepository implements TaskRepository {
     if (!this.collection){
       throw new Error("MongoDB collection is not initialazed");
     }
-
     const task = await this.collection.findOne({"taskName" : taskName});
 
-    return task;
+    if(task){
+      const taskFound = new Task(task?.id, task?.taskName, task?.taskDescription, new Status(task?.status), task?.userTaskCreator, task?.startDate, task?.endDate);
+      return taskFound;
+    }else {
+      return null;
+    }
   }
 
   async eliminateOne(taskName: string): Promise<void> {
