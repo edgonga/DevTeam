@@ -47,7 +47,7 @@ export class TaskMySQLRepository implements TaskRepository {
 			},
 			endDate: {
 				type: DataTypes.DATE,
-				allowNull: false,
+				allowNull: true,
 			},
 		});
 

@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS tasks (
   status VARCHAR(50),
   userTaskCreator VARCHAR(255),
   startDate DATE,
-  endDate DATE
+  endDate DATE NULL
 );
