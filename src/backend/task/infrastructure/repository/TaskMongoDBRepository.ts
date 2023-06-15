@@ -76,8 +76,16 @@ export class TaskMongoDBRepository implements TaskRepository {
     if (!this.collection) {
       throw new Error("MongoDB collection is not initialazed");
     }
+    
+    const task = await this.collection.findOne({ "name": name });
 
-    this.collection.deleteOne({ "name": name });
+    if(task) {
+      this.collection.deleteOne({ "name": name });
+    } else {
+      throw new Error("There is not any Task with this name: " + name)
+    }
+
+    
   }
 
   async updateOne(taskId: string, task: Task | null): Promise<void | null> {
@@ -89,8 +97,6 @@ export class TaskMongoDBRepository implements TaskRepository {
       throw new Error("Task is null");
     }
 
-    console.log("Task NO updated:", task);
-
     try {
       console.log('taskId ->>>>>>>>>' + taskId)
       const updatedTask = await this.collection.findOneAndUpdate(
@@ -98,7 +104,7 @@ export class TaskMongoDBRepository implements TaskRepository {
         {
           $set: {
             name: task.name,
-            description: 'hola MUNDO',
+            description: task.description,
             status: task.status,
           },
         }

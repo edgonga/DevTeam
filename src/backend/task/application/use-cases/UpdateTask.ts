@@ -8,19 +8,13 @@ export class UpdateTask {
 		this.taskRepository = taskRepository;
 	}
 
-	async execute(
-		name: string,
-		newTaskName: string,
-		newTaskDescr: string,
-		newTaskStatus: Status
-	): Promise<void> {
+	async execute(name: string, newName: string, newDescr: string, newStatus: Status): Promise<void> {
 		const task = await this.taskRepository.findOne(name);
 
 		if (task) {
-			task.taskName = newTaskName;
-			task.taskDescription = newTaskDescr;
-			task.status = newTaskStatus;
-			console.log(task.taskName, "   ", task.taskDescription);
+			task.name = newName;
+			task.description = newDescr;
+			task.status = newStatus;
 			await this.taskRepository.updateOne(name, task);
 		} else {
 			throw new Error(`Task with name ${name} not found`);

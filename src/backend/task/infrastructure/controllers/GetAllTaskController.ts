@@ -17,6 +17,7 @@ export class GetAllTaskController {
 			})
 			.catch((err) => {
 				res.status(500).json({ error: "Internal Server Error" });
+				console.log(err);
 			});
 	}
 }
