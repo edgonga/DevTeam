@@ -1,7 +1,5 @@
 import express, { Request, Response } from "express";
 
-import { DateGenerator } from "../../../dependencies/DateGenerator";
-import { IDGenerator } from "../../../dependencies/IDGenerator";
 import { CreateTask } from "../../application/use-cases/CreateTask";
 import { DeleteTask } from "../../application/use-cases/DeleteTask";
 import { FindTask } from "../../application/use-cases/FindTask";
@@ -15,6 +13,7 @@ import { GetAllTaskController } from "../controllers/GetAllTaskController";
 import { UpdateTaskController } from "../controllers/UpdateTaskController";
 import { TaskInMemoryRepository } from "../repository/TaskInMemoryRepository";
 import { TaskMongoDBRepository } from "../repository/TaskMongoDBRepository";
+import { TaskMySQLRepository } from "../repository/TaskSQLRepository";
 
 const taskRouter = express.Router();
 const db = process.argv[2];
@@ -29,7 +28,11 @@ if (db === "mongo") {
 	taskRepository = new TaskMongoDBRepository();
 }
 
-const createTask = new CreateTask(taskRepository, new IDGenerator(), new DateGenerator());
+if (db === "mysql") {
+	taskRepository = new TaskMySQLRepository();
+}
+
+const createTask = new CreateTask(taskRepository);
 const createTaskController = new CreateTaskController(createTask);
 taskRouter.post("/task", (req: Request, res: Response) => createTaskController.run(req, res));
 
@@ -47,6 +50,7 @@ taskRouter.get("/deleteTask", (req: Request, res: Response) => deleteTaskControl
 
 const updateTask = new UpdateTask(taskRepository);
 const updateTaskController = new UpdateTaskController(updateTask);
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 taskRouter.put("/updateTask/:taskName", (req: Request, res: Response) =>
 	updateTaskController.run(req, res)
 );

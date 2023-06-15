@@ -68,10 +68,8 @@ export class TaskMongoDBRepository implements TaskRepository {
       const foundTask = new Task(task.id, task.name, task.description, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)
       return foundTask;
     } else {
-      return null
+      return null;
     }
-
-
   }
 
   async eliminateOne(name: string): Promise<void> {
