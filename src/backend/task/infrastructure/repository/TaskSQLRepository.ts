@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
 /* eslint-disable*/
+=======
+>>>>>>> Stashed changes
 import mysql, { Connection } from "mysql";
 
 import { Task } from "../../domain/entities/Task";
@@ -19,6 +22,7 @@ export class TaskMySQLRepository implements TaskRepository {
 		} catch (error) {
 			console.error("Failed to initialize MySQL connection:", error);
 		}
+<<<<<<< Updated upstream
 	}
 
 	private connectToMySQL(): Connection {
@@ -96,6 +100,91 @@ export class TaskMySQLRepository implements TaskRepository {
 	}
 
 	async eliminateOne(taskName: string): Promise<void> {
+=======
+	}
+
+	private connectToMySQL(): Connection {
+		const config = {
+			host: "localhost",
+			user: "your_mysql_username",
+			password: "your_mysql_password",
+			database: "devTeam",
+		};
+
+		const connection = mysql.createConnection(config);
+		connection.connect();
+
+		return connection;
+	}
+
+	async save(task: Task): Promise<void> {
+>>>>>>> Stashed changes
+		if (!this.connection) {
+			throw new Error("MySQL connection is not initialized");
+		}
+
+<<<<<<< Updated upstream
+		const query = "DELETE FROM tasks WHERE taskName = ?";
+		await this.query(query, [taskName]);
+	}
+
+=======
+		const taskDTO = task.toDTO();
+		const query = "INSERT INTO tasks SET ?";
+		await this.query(query, taskDTO);
+	}
+
+	async getAll(): Promise<Array<Task | null>> {
+		if (!this.connection) {
+			throw new Error("MySQL connection is not initialized");
+		}
+
+		const query = "SELECT * FROM tasks";
+		const result = await this.query(query);
+
+		const taskList: Array<Task | null> = [];
+		result.forEach((task: any) => {
+			const newTask = new Task(
+				task.id,
+				task.taskName,
+				task.taskDescription,
+				new Status(task.status),
+				task.userTaskCreator,
+				task.startDate,
+				task.endDate
+			);
+			taskList.push(newTask);
+		});
+
+		return taskList;
+	}
+
+	async findOne(taskName: string): Promise<Task | null> {
+		if (!this.connection) {
+			throw new Error("MySQL connection is not initialized");
+		}
+
+		const query = "SELECT * FROM tasks WHERE taskName = ?";
+		const result = await this.query(query, [taskName]);
+
+		if (result.length > 0) {
+			const task = result[0];
+
+			return new Task(
+				task.id,
+				task.taskName,
+				task.taskDescription,
+				new Status(task.status),
+				task.userTaskCreator,
+				task.startDate,
+				task.endDate
+			);
+		}
+
+		return null;
+	}
+
+	async eliminateOne(taskName: string): Promise<void> {
 		if (!this.connection) {
 			throw new Error("MySQL connection is not initialized");
 		}
@@ -104,6 +193,7 @@ export class TaskMySQLRepository implements TaskRepository {
 		await this.query(query, [taskName]);
 	}
 
+>>>>>>> Stashed changes
 	async updateOne(taskId: string, task: Task | null): Promise<void | null> {
 		if (!this.connection) {
 			throw new Error("MySQL connection is not initialized");
