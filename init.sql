@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS devTeam;
 
 DROP TABLE IF EXISTS tasks
 CREATE TABLE IF NOT EXISTS tasks (
-  "id" TEXT,
+  "id" VARCHAR(255) NOT NULL,
   "name" VARCHAR(255) NOT NULL,
   "description" TEXT,
   "status" VARCHAR(50),

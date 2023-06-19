@@ -32,9 +32,9 @@ class TaskModel extends Model {
 	  this.TaskModel = TaskModel.init(
 		{
 		  id: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.STRING,
 			primaryKey: true,
-			autoIncrement: true,
+			allowNull: false
 		  },
 		  taskName: {
 			type: DataTypes.STRING,
@@ -59,12 +59,13 @@ class TaskModel extends Model {
 		  endDate: {
 			type: DataTypes.DATE,
 			allowNull: true,
-		  },
+		  }
 		},
 		{
 		  sequelize: this.sequelize,
 		  modelName: "Task",
 		  tableName: "tasks",
+		  timestamps: false
 		}
 	  );
   
@@ -82,7 +83,10 @@ class TaskModel extends Model {
 	}
 
 	async save(task: Task): Promise<void> {
-		await this.TaskModel.create(task.toDTO());
+		const taskDTO = task.toDTO();
+		console.log("TASK CREATED: ", taskDTO);
+		await this.TaskModel.create(taskDTO);
+
 	}
 
 	async getAll(): Promise<Array<Task | null>> {

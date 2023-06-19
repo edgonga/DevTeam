@@ -103,8 +103,8 @@ export class TaskMongoDBRepository implements TaskRepository {
         { "name": taskId },
         {
           $set: {
-            name: task.name,
-            description: task.description,
+            name: task.taskName,
+            description: task.taskDescription,
             status: task.status,
           },
         }
@@ -115,5 +115,4 @@ export class TaskMongoDBRepository implements TaskRepository {
       throw new Error(`Failed to update task: ${error}`);
     }
   }
-
 }
