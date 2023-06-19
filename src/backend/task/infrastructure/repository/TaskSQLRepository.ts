@@ -1,58 +1,75 @@
+/* eslint-disable*/
 import { DataTypes, Model, Sequelize } from "sequelize";
 
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { Status } from "../../domain/value-object/Status";
 
-export class TaskMySQLRepository implements TaskRepository {
+class TaskModel extends Model {
+	public id!: number;
+	public taskName!: string;
+	public taskDescription!: string;
+	public status!: string;
+	public userTaskCreator!: string;
+	public startDate!: Date;
+	public endDate!: Date | null;
+  }
+  
+  export class TaskMySQLRepository implements TaskRepository {
 	private sequelize!: Sequelize;
-
-	private TaskModel!: typeof Model;
-
+	private TaskModel!: typeof TaskModel;
+  
 	constructor() {
-		this.initialize();
+	  this.initialize();
 	}
-
+  
 	private initialize(): void {
-		this.sequelize = new Sequelize("devTeam", "root", "root", {
-			host: "localhost",
-			dialect: "mysql",
-		});
-
-		this.TaskModel = this.sequelize.define("task", {
-			id: {
-				type: DataTypes.INTEGER,
-				primaryKey: true,
-				autoIncrement: true,
-			},
-			name: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			description: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			status: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			userTaskCreator: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			startDate: {
-				type: DataTypes.DATE,
-				allowNull: false,
-			},
-			endDate: {
-				type: DataTypes.DATE,
-				allowNull: true,
-			},
-		});
-
-		this.connectToMySQL();
-		console.log("✅ MySQL connected");
+	  this.sequelize = new Sequelize("devTeam", "root", "root", {
+		host: "localhost",
+		dialect: "mysql",
+	  });
+  
+	  this.TaskModel = TaskModel.init(
+		{
+		  id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true,
+		  },
+		  taskName: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		  },
+		  taskDescription: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		  },
+		  status: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		  },
+		  userTaskCreator: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		  },
+		  startDate: {
+			type: DataTypes.DATE,
+			allowNull: false,
+		  },
+		  endDate: {
+			type: DataTypes.DATE,
+			allowNull: true,
+		  },
+		},
+		{
+		  sequelize: this.sequelize,
+		  modelName: "Task",
+		  tableName: "tasks",
+		}
+	  );
+  
+	  this.connectToMySQL();
+	  console.log("✅ MySQL connected");
 	}
 
 	private async connectToMySQL(): Promise<void> {

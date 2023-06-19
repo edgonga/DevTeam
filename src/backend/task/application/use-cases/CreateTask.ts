@@ -21,7 +21,7 @@ export class CreateTask {
 
 	execute(name: string, description: string, user: string): void {
 		const taskID = this.idGenerator.generate();
-		const startDate = this.dateGenerator.generate();
+		const startDate: Date = this.dateGenerator.generate();
 		const status = new Status(STATUS.PENDING);
 
 		const task = new Task(taskID, name, description, status, user, startDate);
