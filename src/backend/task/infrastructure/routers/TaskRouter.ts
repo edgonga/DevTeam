@@ -14,6 +14,7 @@ import { FindTaskController } from "../controllers/FindTaskController";
 import { GetAllTaskController } from "../controllers/GetAllTaskController";
 import { UpdateTaskController } from "../controllers/UpdateTaskController";
 import { TaskInMemoryRepository } from "../repository/TaskInMemoryRepository";
+import { TaskJsonRepository } from "../repository/TaskJsonRepository";
 import { TaskMongoDBRepository } from "../repository/TaskMongoDBRepository";
 import { TaskMySQLRepository } from "../repository/TaskSQLRepository";
 
@@ -22,8 +23,8 @@ const db = process.argv[2];
 
 let taskRepository: TaskRepository = new TaskInMemoryRepository();
 
-if (db === "in-memory") {
-	taskRepository = new TaskInMemoryRepository();
+if (db === "json") {
+	taskRepository = new TaskJsonRepository("/jsonDB");
 }
 
 if (db === "mongo") {

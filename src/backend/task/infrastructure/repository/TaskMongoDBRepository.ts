@@ -2,7 +2,6 @@
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { Task } from "../../domain/entities/Task";
 import { MongoClient, Collection } from "mongodb";
-import { Console } from "console";
 import { Status } from "../../domain/value-object/Status";
 
 export class TaskMongoDBRepository implements TaskRepository {
