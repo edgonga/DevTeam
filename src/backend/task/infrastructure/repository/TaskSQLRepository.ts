@@ -3,13 +3,13 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
-import { Status } from "../../domain/value-object/Status";
+import { STATUS, Status } from "../../domain/value-object/Status";
 
 class TaskModel extends Model {
-	public id!: number;
+	public id!: string;
 	public taskName!: string;
 	public taskDescription!: string;
-	public status!: string;
+	public status!: STATUS;
 	public userTaskCreator!: string;
 	public startDate!: Date;
 	public endDate!: Date | null;
@@ -34,6 +34,7 @@ class TaskModel extends Model {
 		  id: {
 			type: DataTypes.STRING,
 			primaryKey: true,
+			autoIncrement: false,
 			allowNull: false
 		  },
 		  taskName: {
@@ -96,7 +97,7 @@ class TaskModel extends Model {
 	}
 
 	async findOne(name: string): Promise<Task | null> {
-		const task = await this.TaskModel.findOne({ where: { name } });
+		const task = await this.TaskModel.findOne({ where: { taskName : name } });
 
 		if (task) {
 			return this.createTaskFromModel(task);
@@ -106,26 +107,37 @@ class TaskModel extends Model {
 	}
 
 	async eliminateOne(name: string): Promise<void> {
-		await this.TaskModel.destroy({ where: { name } });
+		await this.TaskModel.destroy({ where: { taskName : name } });
 	}
 
-	async updateOne(taskId: string, updatedTask: Task | null): Promise<void | null> {
+	async updateOne(name: string, updatedTask: Task | null): Promise<void | null> {
 		if (!updatedTask) {
-			throw new Error("Task is null");
+		  throw new Error("Task is null");
 		}
+	  
+		const existingTask = await this.TaskModel.findOne({ where: { taskName : name } });
+	  
+		if (!existingTask) {
+		  throw new Error("Task not found");
+		}
+	  
+		const taskDTO = updatedTask.toDTO();
+	  
+		await existingTask.update(taskDTO);
+		console.log("TASK UPDATED: ", taskDTO);
+	  }
+	  
+	  
 
-		await this.TaskModel.update(updatedTask.toDTO(), { where: { id: taskId } });
-	}
-
-	private createTaskFromModel(taskModel: any): Task {
+	private createTaskFromModel(taskModel: TaskModel): Task {
 		return new Task(
 			taskModel.id,
-			taskModel.name,
-			taskModel.description,
+			taskModel.taskName,
+			taskModel.taskDescription,
 			new Status(taskModel.status),
 			taskModel.userTaskCreator,
 			taskModel.startDate,
-			taskModel.endDate
+			null
 		);
 	}
 }

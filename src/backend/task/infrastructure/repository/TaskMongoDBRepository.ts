@@ -98,7 +98,6 @@ export class TaskMongoDBRepository implements TaskRepository {
     }
 
     try {
-      console.log('taskId ->>>>>>>>>' + taskId)
       const updatedTask = await this.collection.findOneAndUpdate(
         { "name": taskId },
         {
