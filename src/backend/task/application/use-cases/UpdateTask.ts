@@ -8,21 +8,16 @@ export class UpdateTask {
 		this.taskRepository = taskRepository;
 	}
 
-	async execute(
-		taskName: string,
-		newName: string,
-		newDescr: string,
-		newStatus: STATUS
-	): Promise<void> {
-		const task = await this.taskRepository.findOne(taskName);
+	async execute(name: string, newName: string, newDescr: string, newStatus: STATUS): Promise<void> {
+		const task = await this.taskRepository.findOne(name);
 
 		if (task) {
 			task.taskName = newName;
 			task.taskDescription = newDescr;
 			task.status.setStatus(newStatus);
-			await this.taskRepository.updateOne(taskName, task);
+			await this.taskRepository.updateOne(name, task);
 		} else {
-			throw new Error(`Task with name ${taskName} not found`);
+			throw new Error(`Task with name ${name} not found`);
 		}
 	}
 }
