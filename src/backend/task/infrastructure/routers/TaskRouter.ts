@@ -24,7 +24,7 @@ const db = process.argv[2];
 let taskRepository: TaskRepository = new TaskInMemoryRepository();
 
 if (db === "json") {
-	taskRepository = new TaskJsonRepository("/jsonDB");
+	taskRepository = new TaskJsonRepository();
 }
 
 if (db === "mongo") {

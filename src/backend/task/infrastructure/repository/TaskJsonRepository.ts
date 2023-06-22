@@ -7,24 +7,36 @@ import { STATUS, Status } from "../../domain/value-object/Status";
 
 export class TaskJsonRepository implements TaskRepository {
 	private db!: JsonDB;
-	//private readonly outputFile: string;
+	private readonly outputFile: string;
 
 	constructor() {
+		this.outputFile = "\jsonDB";
 		this.initialize();
-		//this.outputFile = outputFile;
 	}
 
 	private async initialize(): Promise<void> {
 		try {
 			// eslint-disable-next-line @typescript-eslint/await-thenable
-			this.db = await new JsonDB(new Config("DB", false, true, "/"));
+			this.db = await new JsonDB(new Config(this.outputFile, true, true, "/"));
 		} catch (error) {
 			console.error("Failed to initialize JSON db:", error);
 		}
 	}
 
 	async save(task: Task): Promise<void | null> {
-        await this.db.push("/task[]", task, true);
+		
+
+		try {
+			const dbDataPromise: Promise<{ tasks: Task[] }> = this.db.getData(this.outputFile);
+			const dbData = await dbDataPromise
+			const tasks = dbData.tasks || []
+			tasks.push(task)
+
+			this.db.push(this.outputFile, tasks, false);
+		} catch (error) {
+			console.error("Failed to save task: ", error);
+			
+		}
 	}
 
 	async getAll(): Promise<Array<Task | null>> {
@@ -71,17 +83,38 @@ export class TaskJsonRepository implements TaskRepository {
 
 	async eliminateOne(taskName: string): Promise<void | null> {
 		try {
-            const taskIndexToDelete = await this.db.getIndex(this.outputFile, taskName);
-            await this.db.delete(this.outputFile[taskIndexToDelete])
-        } catch (error) {
-            console.error('Error in deleting the element: ', error)
-        }
+		  const tasks: Promise<Task[]> = this.db.getData(this.outputFile);
+	  
+		  const taskIndexToDelete = (await tasks).findIndex(task => task.name === taskName);
+	  
+		  if (taskIndexToDelete !== -1) {
+			(await tasks).splice(taskIndexToDelete, 1);
+			this.db.push("/tasks", tasks, true);
+		  } else {
+			console.error('Task not found:', taskName);
+		  }
+		} catch (error) {
+		  console.error('Error in deleting the element: ', error);
+		}
+	  }
+	  
 
-        
-	}
+	async updateOne(taskName: string, updateTask: Task): Promise<void | null> {
+		try {
+			const tasksPromise: Promise<Task[]> = this.db.getData(this.outputFile);
+			const tasks: Task[] = await tasksPromise
+			const taskIndexToUpdate = tasks.findIndex(task => task?.name === taskName)
 
-	async updateOne(taskID: string, task: Task | null): Promise<void | null> {
-		const taskIndexToUpdate = await this.db.getIndex(this.outputFile, taskID);
-        await this.db.push(this.outputFile[taskIndexToUpdate], task, true)
+			if (taskIndexToUpdate !== -1) {
+				tasks.splice(taskIndexToUpdate, 1, updateTask)
+				await this.db.push(this.outputFile, tasks, true);
+			} else {
+				console.error("Task not found: ", taskName);
+				
+			}
+		} catch (error) {
+			console.error("Error in updating: ", error);
+			
+		}
 	}
 }
