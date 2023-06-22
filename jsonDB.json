@@ -1,11 +1,24 @@
 [
     {
         "id": "f7338a9f-2e60-479a-b1cf-9e6062c01f64",
-        "name": "174",
-        "description": "NEW Read a book",
-        "status": 2,
+        "taskName": "1000",
+        "taskDescription": "Walk",
+        "status": {
+            "status": 2
+        },
         "userTaskCreator": "Eduardinho",
         "startDate": "2023-06-22T11:18:34.429Z",
+        "endDate": null
+    },
+    {
+        "id": "ed31bfdc-41b3-45af-ac00-e77e21931b59",
+        "taskName": "175",
+        "taskDescription": "Read 7 book",
+        "status": {
+            "status": 0
+        },
+        "userTaskCreator": "Eduardinho JR",
+        "startDate": "2023-06-22T14:17:44.527Z",
         "endDate": null
     }
 ]
