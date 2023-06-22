@@ -19,6 +19,7 @@ export class Task implements TaskProp {
 	public userTaskCreator: string;
 	readonly startDate: Date;
 	public endDate: Date | null;
+	name: string;
 
 	constructor(
 		id: string,

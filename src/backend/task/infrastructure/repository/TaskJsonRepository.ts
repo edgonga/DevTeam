@@ -4,6 +4,7 @@ import { Config, JsonDB } from "node-json-db";
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { STATUS, Status } from "../../domain/value-object/Status";
+import { statusDone } from "../../../dependencies/DateGenerator";
 
 export class TaskJsonRepository implements TaskRepository {
 	private db!: JsonDB;
@@ -106,6 +107,8 @@ export class TaskJsonRepository implements TaskRepository {
 			const taskIndexToUpdate = tasks.findIndex(task => task?.name === taskName)
 
 			if (taskIndexToUpdate !== -1) {
+				updateTask.endDate = statusDone(updateTask)
+				
 				tasks.splice(taskIndexToUpdate, 1, updateTask)
 				await this.db.push(this.outputFile, tasks, true);
 			} else {
