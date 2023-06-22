@@ -1,5 +1,5 @@
 import { TaskRepository } from "../../domain/repository/TaskRepository";
-import { Status } from "../../domain/value-object/Status";
+import { STATUS } from "../../domain/value-object/Status";
 
 export class UpdateTask {
 	private readonly taskRepository: TaskRepository;
@@ -12,7 +12,7 @@ export class UpdateTask {
 		taskName: string,
 		newName: string,
 		newDescr: string,
-		newStatus: Status
+		newStatus: STATUS
 	): Promise<void> {
 		const task = await this.taskRepository.findOne(taskName);
 

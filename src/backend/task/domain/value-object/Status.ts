@@ -13,8 +13,8 @@ export class Status {
         this.status = status
     }
 
-    public setStatus(status: Status): void {
-        this.status = status.status
+    public setStatus(status: STATUS): void {
+        this.status = status
     }
     
     getStatus(): STATUS {

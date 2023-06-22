@@ -2,7 +2,6 @@
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { Task } from "../../domain/entities/Task";
 import { MongoClient, Collection } from "mongodb";
-import { Console } from "console";
 import { Status } from "../../domain/value-object/Status";
 
 export class TaskMongoDBRepository implements TaskRepository {
@@ -41,7 +40,8 @@ export class TaskMongoDBRepository implements TaskRepository {
     if (!this.collection) {
       throw new Error("MongoDB collection is not initialized");
     }
-    const taskDTO = task.toDTO()
+    const taskDTO = task.toDTO();
+    console.log("TASK CREATED: ", taskDTO);
     await this.collection.insertOne(taskDTO);
   }
 
@@ -53,7 +53,7 @@ export class TaskMongoDBRepository implements TaskRepository {
 
     const tasks = await this.collection.find().toArray();
 
-    tasks.forEach(task => taskList.push(new Task(task.id, task.name, task.description, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)))
+    tasks.forEach(task => taskList.push(new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)))
     return taskList;
   }
 
@@ -62,12 +62,13 @@ export class TaskMongoDBRepository implements TaskRepository {
       throw new Error("MongoDB collection is not initialazed");
     }
 
-    const task = await this.collection.findOne({ "name": name });
+    const task = await this.collection.findOne({ "taskName": name });
 
     if (task) {
-      const foundTask = new Task(task.id, task.name, task.description, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)
+      const foundTask = new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)
       return foundTask;
     } else {
+      console.log("Task not found in the database");
       return null;
     }
   }
@@ -77,10 +78,10 @@ export class TaskMongoDBRepository implements TaskRepository {
       throw new Error("MongoDB collection is not initialazed");
     }
     
-    const task = await this.collection.findOne({ "name": name });
+    const task = await this.collection.findOne({ "taskName": name });
 
     if(task) {
-      this.collection.deleteOne({ "name": name });
+      this.collection.deleteOne({ "taskName": name });
     } else {
       throw new Error("There is not any Task with this name: " + name)
     }
@@ -93,23 +94,23 @@ export class TaskMongoDBRepository implements TaskRepository {
       throw new Error("MongoDB collection is not initialized");
     }
 
-    if (task === null) {
+    if (!task) {
       throw new Error("Task is null");
     }
 
     try {
       const updatedTask = await this.collection.findOneAndUpdate(
-        { "name": taskId },
+        { "taskName": taskId },
         {
           $set: {
-            name: task.taskName,
-            description: task.taskDescription,
-            status: task.status,
+            taskName: task.taskName,
+            taskDescription: task.taskDescription,
+            status: task.status.getStatus(),
           },
         }
       );
 
-      console.log("Task updated:", updatedTask);
+      console.log("TASK UPDATED:", updatedTask);
     } catch (error) {
       throw new Error(`Failed to update task: ${error}`);
     }
