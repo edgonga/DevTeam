@@ -1,11 +1,13 @@
 [
     {
-        "id": "f7338a9f-2e60-479a-b1cf-9e6062c01f64",
-        "name": "174",
-        "description": "NEW Read a book",
-        "status": 2,
-        "userTaskCreator": "Eduardinho",
-        "startDate": "2023-06-22T11:18:34.429Z",
+        "id": "55730fcd-4a3b-4b57-84f9-d74b41c68b97",
+        "taskName": "175",
+        "taskDescription": "Read 7 book",
+        "status": {
+            "status": 0
+        },
+        "userTaskCreator": "Eduardinho JR",
+        "startDate": "2023-06-22T13:41:51.222Z",
         "endDate": null
     }
 ]

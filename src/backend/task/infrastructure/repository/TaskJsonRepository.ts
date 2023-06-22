@@ -107,9 +107,8 @@ export class TaskJsonRepository implements TaskRepository {
 			const taskIndexToUpdate = tasks.findIndex(task => task?.name === taskName)
 
 			if (taskIndexToUpdate !== -1) {
-				updateTask.endDate = statusDone(updateTask)
-				
 				tasks.splice(taskIndexToUpdate, 1, updateTask)
+				updateTask.endDate = statusDone(updateTask)
 				await this.db.push(this.outputFile, tasks, true);
 			} else {
 				console.error("Task not found: ", taskName);
