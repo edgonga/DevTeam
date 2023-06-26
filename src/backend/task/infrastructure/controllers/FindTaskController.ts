@@ -11,6 +11,7 @@ export class FindTaskController {
 
 	run(req: Request, res: Response): void {
 		const name: string = req.body.name;
+		console.log(name);
 
 		this.findTask
 			.search(name)
@@ -18,7 +19,7 @@ export class FindTaskController {
 				res.status(200).json(retrieve);
 			})
 			.catch((err) => {
-				res.status(500).json({ error: "Internal Server Error" });
+				res.status(500).json({ error: `Internal Server Error ${err}` });
 			});
 	}
 }

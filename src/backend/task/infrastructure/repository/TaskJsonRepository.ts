@@ -61,24 +61,13 @@ export class TaskJsonRepository implements TaskRepository {
 		const tasksData = dbData.tasks || []
 
 		
-        const foundTaskData = tasksData.find((task: { id: string; taskName: string; taskDescription: string; status: STATUS; userTaskCreator: string; startDate: Date; endDate: null | undefined; }) => task.taskName === taskName)
-        console.log(foundTaskData);
-		
-		if (foundTaskData) {
-			const foundTask = new Task(
-            foundTaskData.id,
-            foundTaskData.name,
-            foundTaskData.description,
-            new Status(foundTaskData.status),
-            foundTaskData.userTaskCreator,
-            foundTaskData.startDate,
-            foundTaskData.endDate
-        	)
+        const task = tasksData.find((task: { taskName: string; }) => task.taskName === taskName)
+        console.log(task);
+		const foundTask = new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)
 
-        	return foundTaskData;
-		} else {
-			return null;
-		}
+    	return foundTask;
+		
+		
 		
 
 	}
@@ -91,7 +80,7 @@ export class TaskJsonRepository implements TaskRepository {
 	  
 		  if (taskIndexToDelete !== -1) {
 			(await tasks).splice(taskIndexToDelete, 1);
-			this.db.push("/tasks", tasks, true);
+			this.db.push(this.outputFile, tasks, true);
 		  } else {
 			console.error('Task not found:', taskName);
 		  }

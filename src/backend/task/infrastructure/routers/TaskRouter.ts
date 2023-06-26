@@ -45,7 +45,7 @@ taskRouter.get("/getAllTask", (req: Request, res: Response) => getAllTaskControl
 
 const findTask = new FindTask(taskRepository);
 const findTaskController = new FindTaskController(findTask);
-taskRouter.get("/findTask", (req: Request, res: Response) => findTaskController.run(req, res));
+taskRouter.post("/findTask", (req: Request, res: Response) => findTaskController.run(req, res));
 
 const deleteTask = new DeleteTask(taskRepository);
 const deleteTaskController = new DeleteTaskController(deleteTask);
