@@ -5,13 +5,14 @@ import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { STATUS, Status } from "../../domain/value-object/Status";
 import { statusDone } from "../../../dependencies/DateGenerator";
+import { log } from "console";
 
 export class TaskJsonRepository implements TaskRepository {
 	private db!: JsonDB;
 	private readonly outputFile: string;
 
 	constructor() {
-		this.outputFile = "\jsonDB";
+		this.outputFile = "\DB";
 		this.initialize();
 	}
 
@@ -29,56 +30,56 @@ export class TaskJsonRepository implements TaskRepository {
 
 		try {
 			const dbDataPromise: Promise<{ tasks: Task[] }> = this.db.getData(this.outputFile);
-			const dbData = await dbDataPromise
+			const dbData = await dbDataPromise			
+			
 			const tasks = dbData.tasks || []
 			tasks.push(task)
-
-			this.db.push(this.outputFile, tasks, false);
+			this.db.push(this.outputFile, { tasks })
+			
 		} catch (error) {
 			console.error("Failed to save task: ", error);
 			
 		}
 	}
 
-	async getAll(): Promise<Array<Task | null>> {
-		const taskList: Array<Task | null> = [];
-
-		const tasks = await this.db.getData(this.outputFile);
-
-		tasks.forEach((task: { id: string; name: string; description: string; status: STATUS; userTaskCreator: string; startDate: Date; endDate: null | undefined; }) =>
-			taskList.push(
-				new Task(
-					task.id,
-					task.name,
-					task.description,
-					new Status(task.status),
-					task.userTaskCreator,
-					task.startDate,
-					task.endDate
-				)
-			)
-		);
-
-		return tasks;
+	async getAll(): Promise<Task[]> {
+		try {
+			const dbData = await this.db.getData(this.outputFile)
+			const tasks = dbData.tasks || [];
+			tasks.forEach((task: { id: string; taskName: string; taskDescription: string; status: STATUS; userTaskCreator: string; startDate: Date; endDate: null | undefined; }) => tasks.push(new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)))
+			return tasks;
+		  } catch (error) {
+			console.error("Failed to retrieve tasks: ", error);
+			return [];
+		  }
 	}
 
 	async findOne(taskName: string): Promise<Task | null> {
 		
 
-		const tasks = await this.db.getData(this.outputFile);
+		const dbData = await this.db.getData(this.outputFile);
+		const tasksData = dbData.tasks || []
 
-        const task = tasks.find((task: { name: string; }) => task.name === taskName)
-        const taskObject = new Task(
-            task.id,
-            task.name,
-            task.description,
-            new Status(task.status),
-            task.userTaskCreator,
-            task.startDate,
-            task.endDate
-        )
+		
+        const foundTaskData = tasksData.find((task: { id: string; taskName: string; taskDescription: string; status: STATUS; userTaskCreator: string; startDate: Date; endDate: null | undefined; }) => task.taskName === taskName)
+        console.log(foundTaskData);
+		
+		if (foundTaskData) {
+			const foundTask = new Task(
+            foundTaskData.id,
+            foundTaskData.name,
+            foundTaskData.description,
+            new Status(foundTaskData.status),
+            foundTaskData.userTaskCreator,
+            foundTaskData.startDate,
+            foundTaskData.endDate
+        	)
 
-        return taskObject;
+        	return foundTaskData;
+		} else {
+			return null;
+		}
+		
 
 	}
 
