@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { DateGenerator } from "../../../dependencies/DateGenerator";
 import { IDGenerator } from "../../../dependencies/IDGenerator";
 import { Task } from "../../domain/entities/Task";
@@ -19,7 +20,22 @@ export class CreateTask {
 		this.dateGenerator = dateGenerator;
 	}
 
-	execute(name: string, description: string, user: string): void {
+	private async exists(name: string): Promise<boolean> {
+		const task = await this.taskRepository.findOne(name);
+		if (task) {
+			return true;
+		}
+
+		return false;
+	}
+
+	async execute(name: string, description: string, user: string): Promise<void> {
+		const isAnExistingTask = await this.exists(name);
+
+		if (isAnExistingTask) {
+			throw new Error(`The task ${name} is already existing`);
+		}
+
 		const taskID = this.idGenerator.generate();
 		const startDate: Date = this.dateGenerator.generate();
 		const status = new Status(STATUS.PENDING);
