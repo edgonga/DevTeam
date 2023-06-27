@@ -11,7 +11,6 @@ export class FindTaskController {
 
 	run(req: Request, res: Response): void {
 		const name: string = req.body.name;
-		console.log(name);
 
 		this.findTask
 			.search(name)

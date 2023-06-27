@@ -1,7 +1,5 @@
 import { STATUS, Status } from "../value-object/Status";
 
-// properties: id, task_taskName, task_taskDescription, status (enum: pending, on-going, done), user_task_creation
-
 export interface TaskProp {
 	readonly id: string;
 	taskName: string;
@@ -12,6 +10,8 @@ export interface TaskProp {
 	endDate: null | Date;
 }
 export class Task implements TaskProp {
+	updateTask: Task;
+	[x: string]: Task;
 	readonly id: string;
 	public taskName: string;
 	public taskDescription: string;
@@ -19,6 +19,7 @@ export class Task implements TaskProp {
 	public userTaskCreator: string;
 	readonly startDate: Date;
 	public endDate: Date | null;
+	updateTask: Task;
 
 	constructor(
 		id: string,

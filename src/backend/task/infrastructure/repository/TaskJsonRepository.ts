@@ -4,8 +4,6 @@ import { Config, JsonDB } from "node-json-db";
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { STATUS, Status } from "../../domain/value-object/Status";
-import { statusDone } from "../../../dependencies/DateGenerator";
-import { log } from "console";
 
 export class TaskJsonRepository implements TaskRepository {
 	private db!: JsonDB;
@@ -25,88 +23,86 @@ export class TaskJsonRepository implements TaskRepository {
 		}
 	}
 
-	async save(task: Task): Promise<void | null> {
-		
+	async save(task: Task): Promise < void | null > {
 
-		try {
-			const dbDataPromise: Promise<{ tasks: Task[] }> = this.db.getData(this.outputFile);
-			const dbData = await dbDataPromise			
-			
-			const tasks = dbData.tasks || []
-			tasks.push(task)
-			this.db.push(this.outputFile, { tasks })
-			
-		} catch (error) {
-			console.error("Failed to save task: ", error);
-			
-		}
-	}
-
-	async getAll(): Promise<Task[]> {
-		try {
-			const dbData = await this.db.getData(this.outputFile)
-			const tasks = dbData.tasks || [];
-			tasks.forEach((task: { id: string; taskName: string; taskDescription: string; status: STATUS; userTaskCreator: string; startDate: Date; endDate: null | undefined; }) => tasks.push(new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)))
-			return tasks;
-		  } catch (error) {
-			console.error("Failed to retrieve tasks: ", error);
-			return [];
-		  }
-	}
-
-	async findOne(taskName: string): Promise<Task | null> {
-		
-
+	try {
 		const dbData = await this.db.getData(this.outputFile);
-		const tasksData = dbData.tasks || []
+		const tasks = dbData.tasks || []
+		tasks.push(task)
+		this.db.push(this.outputFile, { tasks })
 
-		
-        const task = tasksData.find((task: { taskName: string; }) => task.taskName === taskName)
-        console.log(task);
-		const foundTask = new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)
-
-    	return foundTask;
-		
-		
-		
-
+	} catch (error) {
+		console.error("Failed to save task: ", error);
+	}
 	}
 
-	async eliminateOne(taskName: string): Promise<void | null> {
-		try {
-		  const tasks: Promise<Task[]> = this.db.getData(this.outputFile);
-	  
-		  const taskIndexToDelete = (await tasks).findIndex(task => task.taskName === taskName);
-	  
-		  if (taskIndexToDelete !== -1) {
-			(await tasks).splice(taskIndexToDelete, 1);
-			this.db.push(this.outputFile, tasks, true);
-		  } else {
+	async getAll(): Promise < Task[] > {
+	try {
+		const dbData = await this.db.getData(this.outputFile)
+		const tasksData = dbData.tasks || [];
+		const tasks: Task[] = []
+		// console.log(dbData.tasks.lenght);
+		// console.log(dbData.lenght);
+		// console.log(tasksData.lenght);
+		
+		
+		tasksData.forEach((task: { id: string; taskName: string; taskDescription: string; status: STATUS; userTaskCreator: string; startDate: Date; endDate: null | undefined; }) => 
+			tasks.push(new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)))
+			this.db.push(this.outputFile, { tasks })
+			return tasks;
+	} catch(error) {
+		console.error("Failed to retrieve tasks: ", error);
+		return [];
+	}
+	}
+
+	async findOne(taskName: string): Promise < Task | null > {
+
+	const dbData = await this.db.getData(this.outputFile);
+	const tasksData = dbData.tasks || []
+
+	const task = tasksData.find((task: { taskName: string; }) => task.taskName === taskName)
+	const foundTask = new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)
+
+	return foundTask;
+	}
+
+	async eliminateOne(taskName: string): Promise < void | null > {
+	try {
+		const dbData = await this.db.getData(this.outputFile);
+		const tasks = dbData.tasks || []
+
+		const taskIndexToDelete = tasks.findIndex((task: { taskName: string; }) => task.taskName === taskName);
+
+		if(taskIndexToDelete !== -1) {
+			tasks.splice(taskIndexToDelete, 1);
+			this.db.push(this.outputFile, { tasks }, true);
+		} else {
 			console.error('Task not found:', taskName);
-		  }
-		} catch (error) {
-		  console.error('Error in deleting the element: ', error);
 		}
-	  }
-	  
+	} catch (error) {
+		console.error('Error in deleting the element: ', error);
+	}
+	}
 
-	async updateOne(taskName: string, updateTask: Task): Promise<void | null> {
+
+	async updateOne(taskName: string, updateTask: Task): Promise < void | null > {
 		try {
-			const tasksPromise: Promise<Task[]> = this.db.getData(this.outputFile);
-			const tasks: Task[] = await tasksPromise
-			const taskIndexToUpdate = tasks.findIndex(task => task?.taskName === taskName)
 
-			if (taskIndexToUpdate !== -1) {
+			const dbData = await this.db.getData(this.outputFile);
+			const tasks = dbData.tasks || [] 
+			// console.log(taskName, updateTask);
+			
+			const taskIndexToUpdate = tasks.findIndex((task: { taskName: string; }) => task.taskName === taskName);	
+
+			if(taskIndexToUpdate !== -1) {
 				tasks.splice(taskIndexToUpdate, 1, updateTask)
-				updateTask.endDate = statusDone(updateTask)
-				await this.db.push(this.outputFile, tasks, true);
+				this.db.push(this.outputFile, { tasks }, true);
 			} else {
 				console.error("Task not found: ", taskName);
-				
 			}
 		} catch (error) {
-			console.error("Error in updating: ", error);
-			
+			console.error("Error in updating: ", error);	
 		}
 	}
 }

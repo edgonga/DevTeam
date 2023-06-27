@@ -1,5 +1,5 @@
 node_modules
 dist
 mysql_data
-jsonDB
+DB.json
 

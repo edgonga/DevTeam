@@ -15,7 +15,8 @@ export class UpdateTaskController {
 		const newName: string = req.body.name;
 		const newDescr: string = req.body.description;
 		const newStatus: STATUS = req.body.status;
-
+		//console.log(name, newDescr, newName, newStatus);
+		
 		try {
 			await this.updateTask.execute(name, newName, newDescr, newStatus);
 			res.status(200).json({ message: `The task with name: ${name} has been updated` });

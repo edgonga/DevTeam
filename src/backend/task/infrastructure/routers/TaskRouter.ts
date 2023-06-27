@@ -51,7 +51,7 @@ const deleteTask = new DeleteTask(taskRepository);
 const deleteTaskController = new DeleteTaskController(deleteTask);
 taskRouter.get("/deleteTask", (req: Request, res: Response) => deleteTaskController.run(req, res));
 
-const updateTask = new UpdateTask(taskRepository);
+const updateTask = new UpdateTask(taskRepository, new DateGenerator());
 const updateTaskController = new UpdateTaskController(updateTask);
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 taskRouter.put("/updateTask/:taskName", (req: Request, res: Response) =>
