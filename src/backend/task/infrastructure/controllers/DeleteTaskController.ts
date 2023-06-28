@@ -9,11 +9,23 @@ export class DeleteTaskController {
 		this.deleteTask = deletask;
 	}
 
-	run(req: Request, res: Response): Response {
-		const name: string = req.body.name;
+	async run(req: Request, res: Response): Promise<Response> {
+		const id = req.params.id;
+		const url = `http://localhost:8000/task?name=${id}`;
 
-		this.deleteTask.eliminate(name);
+		try {
+			const response = await fetch(url);
+			const data = await response.json();
+			const name: string = data.name;
 
-		return res.sendStatus(200);
+			console.log(url, response, data, name);
+
+			this.deleteTask.eliminate(name);
+
+			return res.sendStatus(200);
+		} catch (error) {
+			// Handle error
+			return res.status(500).send(`Error fetching data from the provided URL: ${error}`);
+		}
 	}
 }
