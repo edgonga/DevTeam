@@ -4,6 +4,7 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { STATUS, Status } from "../../domain/value-object/Status";
+import { error } from "console";
 
 class TaskModel extends Model {
 	public id!: string;
@@ -40,6 +41,7 @@ class TaskModel extends Model {
 		  taskName: {
 			type: DataTypes.STRING,
 			allowNull: false,
+			primaryKey: true
 		  },
 		  taskDescription: {
 			type: DataTypes.STRING,
@@ -84,6 +86,12 @@ class TaskModel extends Model {
 	}
 
 	async save(task: Task): Promise<void> {
+		const exists = await this.TaskModel.findOne({ where: { taskName : task.taskName } });
+		if (exists) {
+			console.error("Task already exists");
+			return
+			
+		}
 		const taskDTO = task.toDTO();
 		console.log("TASK CREATED: ", taskDTO);
 		await this.TaskModel.create(taskDTO);

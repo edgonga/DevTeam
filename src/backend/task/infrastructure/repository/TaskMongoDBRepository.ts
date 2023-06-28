@@ -40,6 +40,11 @@ export class TaskMongoDBRepository implements TaskRepository {
     if (!this.collection) {
       throw new Error("MongoDB collection is not initialized");
     }
+    const exists = await this.collection.findOne({ taskName: task.taskName })
+    if (exists) {
+      console.error("Task already exists");
+      return
+    }
     const taskDTO = task.toDTO();
     console.log("TASK CREATED: ", taskDTO);
     await this.collection.insertOne(taskDTO);

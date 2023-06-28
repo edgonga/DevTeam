@@ -24,10 +24,16 @@ export class TaskJsonRepository implements TaskRepository {
 	}
 
 	async save(task: Task): Promise < void | null > {
-
+	
 	try {
 		const dbData = await this.db.getData(this.outputFile);
 		const tasks = dbData.tasks || []
+		const exists = tasks.some((t: { taskName: string; }) => t.taskName === task.taskName)
+		if (exists) {
+			console.error("Task already exists");
+			return;
+			
+		}
 		tasks.push(task)
 		this.db.push(this.outputFile, { tasks })
 
@@ -40,11 +46,7 @@ export class TaskJsonRepository implements TaskRepository {
 	try {
 		const dbData = await this.db.getData(this.outputFile)
 		const tasksData = dbData.tasks || [];
-		const tasks: Task[] = []
-		// console.log(dbData.tasks.lenght);
-		// console.log(dbData.lenght);
-		// console.log(tasksData.lenght);
-		
+		const tasks: Task[] = []	
 		
 		tasksData.forEach((task: { id: string; taskName: string; taskDescription: string; status: STATUS; userTaskCreator: string; startDate: Date; endDate: null | undefined; }) => 
 			tasks.push(new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)))
