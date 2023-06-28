@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { UpdateTask } from "../../application/use-cases/UpdateTask";
-import { Status } from "../../domain/value-object/Status";
+import { STATUS } from "../../domain/value-object/Status";
 
 export class UpdateTaskController {
 	private readonly updateTask: UpdateTask;
@@ -14,8 +14,9 @@ export class UpdateTaskController {
 		const name: string = req.params.taskName;
 		const newName: string = req.body.name;
 		const newDescr: string = req.body.description;
-		const newStatus: Status = req.body.status;
-
+		const newStatus: STATUS = req.body.status;
+		//console.log(name, newDescr, newName, newStatus);
+		
 		try {
 			await this.updateTask.execute(name, newName, newDescr, newStatus);
 			res.status(200).json({ message: `The task with name: ${name} has been updated` });

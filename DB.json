@@ -1,0 +1,17 @@
+{
+    "tasks": [
+        {
+            "id": "f22fd93f-85dd-41ac-b32e-066ba8e54a3f",
+            "taskName": "Obs",
+            "taskDescription": "3k",
+            "status": {
+                "status": {
+                    "status": 0
+                }
+            },
+            "userTaskCreator": "MGM",
+            "startDate": "2023-06-27T13:55:35.914Z",
+            "endDate": null
+        }
+    ]
+}

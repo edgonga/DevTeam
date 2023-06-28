@@ -19,7 +19,7 @@ export class FindTaskController {
 				res.status(200).json(retrieve);
 			})
 			.catch((err) => {
-				res.status(500).json({ error: "Internal Server Error" });
+				res.status(500).json({ error: `Internal Server Error ${err}` });
 			});
 	}
 }

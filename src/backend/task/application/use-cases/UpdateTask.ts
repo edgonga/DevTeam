@@ -1,29 +1,38 @@
+import { DateGenerator } from "../../../dependencies/DateGenerator";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
-import { Status } from "../../domain/value-object/Status";
+import { STATUS } from "../../domain/value-object/Status";
 
 export class UpdateTask {
 	private readonly taskRepository: TaskRepository;
+	private readonly dateGenerator: DateGenerator;
 
-	constructor(taskRepository: TaskRepository) {
+	constructor(taskRepository: TaskRepository, dateGenerator: DateGenerator) {
 		this.taskRepository = taskRepository;
+		this.dateGenerator = dateGenerator;
 	}
 
 	async execute(
-		name: string,
-		newTaskName: string,
-		newTaskDescr: string,
-		newTaskStatus: Status
+		taskName: string,
+		newName: string,
+		newDescr: string,
+		newStatus: STATUS
 	): Promise<void> {
-		const task = await this.taskRepository.findOne(name);
+		const task = await this.taskRepository.findOne(taskName);
 
 		if (task) {
-			task.taskName = newTaskName;
-			task.taskDescription = newTaskDescr;
-			task.status = newTaskStatus;
-			console.log(task.taskName, "   ", task.taskDescription);
-			await this.taskRepository.updateOne(name, task);
+			task.taskName = newName;
+			task.taskDescription = newDescr;
+
+			if (newStatus === 2) {
+				task.endDate = this.dateGenerator.generate();
+			} else {
+				task.endDate = null;
+			}
+			task.status.setStatus(newStatus);
+
+			await this.taskRepository.updateOne(taskName, task);
 		} else {
-			throw new Error(`Task with name ${name} not found`);
+			throw new Error(`Task with name ${taskName} not found`);
 		}
 	}
 }

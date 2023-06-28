@@ -1,17 +1,18 @@
-import moment from "moment-timezone";
+import { DateTime } from "luxon";
 
 export function getTimezone(date: Date): boolean {
-	const momentDate = moment(date);
-	const isDayLightSavingTime = momentDate.isDST();
+	const luxonDate = DateTime.fromJSDate(date);
+	const isDaylightSavingTime = luxonDate.isInDST;
 
-	return isDayLightSavingTime;
+	return isDaylightSavingTime;
 }
+
 export class DateGenerator {
 	generate(): Date {
-		const currentDate = new Date();
-		const dayLightSavingTime = getTimezone(currentDate);
+		const currentDate: Date = new Date();
+		const daylightSavingTime = getTimezone(currentDate);
 
-		currentDate.setUTCHours(currentDate.getUTCHours() + (dayLightSavingTime ? 2 : 1));
+		currentDate.setUTCHours(currentDate.getUTCHours() + (daylightSavingTime ? 2 : 1));
 
 		return currentDate;
 	}

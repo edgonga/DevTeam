@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { DateGenerator } from "../../../dependencies/DateGenerator";
 import { IDGenerator } from "../../../dependencies/IDGenerator";
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { STATUS, Status } from "../../domain/value-object/Status";
+import { FindTask } from "./FindTask";
 
 export class CreateTask {
 	private readonly taskRepository: TaskRepository;
 	private readonly idGenerator: IDGenerator;
 	private readonly dateGenerator: DateGenerator;
+	private readonly findTask!: FindTask;
 
 	constructor(
 		taskRepository: TaskRepository,
@@ -21,7 +24,7 @@ export class CreateTask {
 
 	execute(name: string, description: string, user: string): void {
 		const taskID = this.idGenerator.generate();
-		const startDate = this.dateGenerator.generate();
+		const startDate: Date = this.dateGenerator.generate();
 		const status = new Status(STATUS.PENDING);
 
 		const task = new Task(taskID, name, description, status, user, startDate);

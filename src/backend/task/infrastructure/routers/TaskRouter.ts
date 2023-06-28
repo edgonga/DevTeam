@@ -14,19 +14,25 @@ import { FindTaskController } from "../controllers/FindTaskController";
 import { GetAllTaskController } from "../controllers/GetAllTaskController";
 import { UpdateTaskController } from "../controllers/UpdateTaskController";
 import { TaskInMemoryRepository } from "../repository/TaskInMemoryRepository";
+import { TaskJsonRepository } from "../repository/TaskJsonRepository";
 import { TaskMongoDBRepository } from "../repository/TaskMongoDBRepository";
+import { TaskMySQLRepository } from "../repository/TaskSQLRepository";
 
 const taskRouter = express.Router();
 const db = process.argv[2];
 
 let taskRepository: TaskRepository = new TaskInMemoryRepository();
 
-if (db === "in-memory") {
-	taskRepository = new TaskInMemoryRepository();
+if (db === "json") {
+	taskRepository = new TaskJsonRepository();
 }
 
 if (db === "mongo") {
 	taskRepository = new TaskMongoDBRepository();
+}
+
+if (db === "mysql") {
+	taskRepository = new TaskMySQLRepository();
 }
 
 const createTask = new CreateTask(taskRepository, new IDGenerator(), new DateGenerator());
@@ -39,14 +45,15 @@ taskRouter.get("/getAllTask", (req: Request, res: Response) => getAllTaskControl
 
 const findTask = new FindTask(taskRepository);
 const findTaskController = new FindTaskController(findTask);
-taskRouter.get("/findTask", (req: Request, res: Response) => findTaskController.run(req, res));
+taskRouter.post("/findTask", (req: Request, res: Response) => findTaskController.run(req, res));
 
 const deleteTask = new DeleteTask(taskRepository);
 const deleteTaskController = new DeleteTaskController(deleteTask);
 taskRouter.get("/deleteTask", (req: Request, res: Response) => deleteTaskController.run(req, res));
 
-const updateTask = new UpdateTask(taskRepository);
+const updateTask = new UpdateTask(taskRepository, new DateGenerator());
 const updateTaskController = new UpdateTaskController(updateTask);
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 taskRouter.put("/updateTask/:taskName", (req: Request, res: Response) =>
 	updateTaskController.run(req, res)
 );
