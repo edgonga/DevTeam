@@ -4,11 +4,13 @@ import { IDGenerator } from "../../../dependencies/IDGenerator";
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { STATUS, Status } from "../../domain/value-object/Status";
+import { FindTask } from "./FindTask";
 
 export class CreateTask {
 	private readonly taskRepository: TaskRepository;
 	private readonly idGenerator: IDGenerator;
 	private readonly dateGenerator: DateGenerator;
+	private readonly findTask!: FindTask;
 
 	constructor(
 		taskRepository: TaskRepository,
@@ -20,22 +22,7 @@ export class CreateTask {
 		this.dateGenerator = dateGenerator;
 	}
 
-	private async exists(name: string): Promise<boolean> {
-		const task = await this.taskRepository.findOne(name);
-		if (task) {
-			return true;
-		}
-
-		return false;
-	}
-
-	async execute(name: string, description: string, user: string): Promise<void> {
-		const isAnExistingTask = await this.exists(name);
-
-		if (isAnExistingTask) {
-			throw new Error(`The task ${name} is already existing`);
-		}
-
+	execute(name: string, description: string, user: string): void {
 		const taskID = this.idGenerator.generate();
 		const startDate: Date = this.dateGenerator.generate();
 		const status = new Status(STATUS.PENDING);
