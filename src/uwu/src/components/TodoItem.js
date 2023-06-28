@@ -6,7 +6,6 @@ const TodoItem = ({ todo }) => {
   const itemRef = useRef(null);
 
   useEffect(() => {
-    // Add the active class after the component is mounted
     if (itemRef.current) {
       itemRef.current.classList.add("todo-item-enter-active");
     }
