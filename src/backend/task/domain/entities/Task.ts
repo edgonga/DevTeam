@@ -37,7 +37,7 @@ export class Task implements TaskProp {
 		this.userTaskCreator = userTaskCreator;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.validate();
+		//this.validate();
 	}
 
 	private validate(): void | Error {

@@ -4,6 +4,7 @@ import { Task } from "../../domain/entities/Task";
 import { MongoClient, Collection } from "mongodb";
 import { Status } from "../../domain/value-object/Status";
 
+
 export class TaskMongoDBRepository implements TaskRepository {
 
   private collection: Collection | null = null;
@@ -55,8 +56,9 @@ export class TaskMongoDBRepository implements TaskRepository {
       throw new Error("MongoDB collection is not initialized");
     }
     const taskList: Array<Task | null> = []
-
     const tasks = await this.collection.find().toArray();
+    console.log(tasks);
+    
 
     tasks.forEach(task => taskList.push(new Task(task.id, task.taskName, task.taskDescription, new Status(task.status), task.userTaskCreator, task.startDate, task.endDate)))
     return taskList;
@@ -104,6 +106,8 @@ export class TaskMongoDBRepository implements TaskRepository {
     }
 
     try {
+      
+      
       const updatedTask = await this.collection.findOneAndUpdate(
         { "taskName": taskId },
         {
@@ -111,6 +115,7 @@ export class TaskMongoDBRepository implements TaskRepository {
             taskName: task.taskName,
             taskDescription: task.taskDescription,
             status: task.status.getStatus(),
+            endDate: task.endDate
           },
         }
       );
