@@ -10,8 +10,6 @@ export interface TaskProp {
 	endDate: null | Date;
 }
 export class Task implements TaskProp {
-	updateTask: Task;
-	[x: string]: Task;
 	readonly id: string;
 	public taskName: string;
 	public taskDescription: string;
@@ -19,7 +17,6 @@ export class Task implements TaskProp {
 	public userTaskCreator: string;
 	readonly startDate: Date;
 	public endDate: Date | null;
-	updateTask: Task;
 
 	constructor(
 		id: string,

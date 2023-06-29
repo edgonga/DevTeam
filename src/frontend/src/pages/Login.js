@@ -5,18 +5,21 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const handleNameChange = (e) => {
+    
     setName(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
+    
     setPassword(e.target.value);
   };
 
   const handleLogin = async (e) => {
+    console.log({userName})
     e.preventDefault();
   
     try {
-      const response = await fetch('/', {
+      const response = await fetch('localhost:8000/getAllTask', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,9 +45,10 @@ const Login = () => {
     }
   };
   
-
+// Submit NO logic
   return (
-    <div>
+    <>
+    <div>  
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <input
@@ -59,9 +63,10 @@ const Login = () => {
           value={password}
           onChange={handlePasswordChange}
         />
-        <button type="submit">Login</button>
+        <button type="submit" onClick={console.log("clicked")}>Login</button>
       </form>
     </div>
+    </>
   );
 };
 
