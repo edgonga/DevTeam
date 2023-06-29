@@ -1,12 +1,15 @@
-/* eslint-disable */
+export interface UserProps {
+	readonly name: string;
+	password: Buffer;
+}
 
-export class User {
-	private readonly name: string;
-	private password: string
+export class User implements UserProps {
+	name: string;
+	password: Buffer;
 
-	constructor(name: string, password: string) {
+	constructor(name: string, password: Buffer) {
 		this.name = this.nameUserValidate(name);
-		this.password = this.passwordValidate(password)
+		this.password = this.passwordValidate(password);
 	}
 
 	sayHello(): string {
@@ -17,21 +20,20 @@ export class User {
 		return { name: this.name };
 	}
 
-	passwordValidate(password: string): string {
-		if(!password && password.length < 4) {
-			throw new Error(`Invalid password`)
+	passwordValidate(password: Buffer): Buffer {
+		const passwordString = password.toString("utf8");
+		if (passwordString.length < 4) {
+			throw new Error(`Invalid password`);
 		} else {
-			return password
+			return password;
 		}
 	}
 
 	nameUserValidate(userName: string): string {
-		if(!userName && userName.length < 2) {
-			throw new Error(`Invalid User name`)
+		if (!userName && userName.length < 2) {
+			throw new Error(`Invalid User name`);
 		} else {
-			return userName
+			return userName;
 		}
 	}
 }
-
-export default User;

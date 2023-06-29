@@ -4,7 +4,8 @@ import { json, urlencoded } from "body-parser";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
-import { taskRouter } from "../task/infrastructure/routers/create-task-router";
+import { taskRouter } from "../task/infrastructure/routers/TaskRouter";
+import { userRouter } from "../user/infrastructure/routers/UserRouter";
 
 export class Server {
 	private readonly express: express.Express;
@@ -18,6 +19,7 @@ export class Server {
 		this.express.use(json());
 		this.express.use(urlencoded({ extended: true }));
 		this.express.use(taskRouter)
+		this.express.use(userRouter)
 	}
 
 	async listen(): Promise<void> {

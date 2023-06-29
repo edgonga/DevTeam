@@ -2,7 +2,7 @@ import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 
 export class TaskInMemoryRepository implements TaskRepository {
-	private readonly tasks: Array<Task | null>;
+	private tasks: Array<Task | null>;
 
 	constructor() {
 		this.tasks = [];
@@ -18,6 +18,25 @@ export class TaskInMemoryRepository implements TaskRepository {
 	async getAll(): Promise<Array<Task | null>> {
 		return new Promise((resolve) => {
 			resolve(this.tasks);
+		});
+	}
+
+	async findOne(taskName: string): Promise<Task | null> {
+		return new Promise((resolve) => {
+			const task = this.tasks.find((task) => task?.taskName === taskName);
+
+			if (task === undefined) {
+				resolve(null);
+			} else {
+				resolve(task);
+			}
+		});
+	}
+
+	async eliminateOne(taskName: string): Promise<void> {
+		return new Promise((resolve) => {
+			this.tasks = this.tasks.filter((task) => task?.taskName !== taskName);
+			resolve();
 		});
 	}
 }
