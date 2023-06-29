@@ -4,7 +4,6 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repository/TaskRepository";
 import { STATUS, Status } from "../../domain/value-object/Status";
-import { error } from "console";
 
 class TaskModel extends Model {
 	public id!: string;
