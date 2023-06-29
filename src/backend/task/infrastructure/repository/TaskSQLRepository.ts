@@ -40,8 +40,7 @@ class TaskModel extends Model {
 		  },
 		  taskName: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			primaryKey: true
+			allowNull: false
 		  },
 		  taskDescription: {
 			type: DataTypes.STRING,
@@ -130,7 +129,7 @@ class TaskModel extends Model {
 		}
 	  
 		const taskDTO = updatedTask.toDTO();
-	  
+		
 		await existingTask.update(taskDTO);
 		console.log("TASK UPDATED: ", taskDTO);
 	  }
@@ -145,7 +144,7 @@ class TaskModel extends Model {
 			new Status(taskModel.status),
 			taskModel.userTaskCreator,
 			taskModel.startDate,
-			null
+			taskModel.endDate
 		);
 	}
 }

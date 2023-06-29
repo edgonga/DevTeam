@@ -11,3 +11,6 @@ CREATE TABLE IF NOT EXISTS tasks (
   "startDate" DATE,
   "endDate" DATE NULL
 );
+
+USE devTeam;
+ALTER TABLE tasks MODIFY id VARCHAR(255);
