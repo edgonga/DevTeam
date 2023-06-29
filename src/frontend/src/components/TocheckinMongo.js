@@ -1,14 +1,14 @@
 const { MongoClient } = require('mongodb');
 
 // Set up MongoDB connection
-const uri = 'mongodb://localhost:27017'; // Replace with your MongoDB connection string
+const uri = 'mongodb://localhost:27017';
 const client = new MongoClient(uri);
 
 async function connectToDatabase() {
   try {
     await client.connect();
     console.log('Connected to MongoDB');
-    return client.db('your-database-name'); // Replace with your database name
+    return client.db('DATABASENAME');
   } catch (error) {
     console.error('Failed to connect to MongoDB', error);
     throw error;
@@ -22,7 +22,7 @@ const UserSchema = {
 };
 
 // Example user registration endpoint
-app.post('/api/register', async (req, res) => {
+app.post('/register', async (req, res) => {
   const { name, password } = req.body;
 
   try {
@@ -45,7 +45,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 // Example user login endpoint
-app.post('/api/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   const { name, password } = req.body;
 
   try {

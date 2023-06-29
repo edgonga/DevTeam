@@ -7,7 +7,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const toLogIn = () => navigate("/login");
   const toSignUp = () => navigate("/signup");
-  const toHome = () => navigate("/");
+  const toHome = () => navigate("/home");
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const userName = localStorage.getItem("userName");
 
