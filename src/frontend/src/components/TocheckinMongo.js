@@ -21,7 +21,7 @@ const UserSchema = {
   password: String,
 };
 
-// Example user registration endpoint
+// ENDPOINTS to user repository
 app.post('/register', async (req, res) => {
   const { name, password } = req.body;
 
@@ -45,7 +45,7 @@ app.post('/register', async (req, res) => {
 });
 
 // Example user login endpoint
-app.post('/login', async (req, res) => {
+app.post('/', async (req, res) => {
   const { name, password } = req.body;
 
   try {

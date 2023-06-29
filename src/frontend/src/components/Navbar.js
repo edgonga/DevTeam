@@ -5,7 +5,7 @@ import { BsPersonAdd } from "react-icons/bs";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const toLogIn = () => navigate("/login");
+  const toLogIn = () => navigate("/");
   const toSignUp = () => navigate("/signup");
   const toHome = () => navigate("/home");
   const isLoggedIn = localStorage.getItem("isLoggedIn");
