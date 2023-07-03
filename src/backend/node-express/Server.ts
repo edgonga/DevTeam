@@ -7,6 +7,11 @@ import helmet from "helmet";
 import { taskRouter } from "../task/infrastructure/routers/TaskRouter";
 import { userRouter } from "../user/infrastructure/routers/UserRouter";
 
+const corsOptions = {
+	origin: 'http://localhost:8000', // Origen permitido (URL de tu aplicación cliente)
+	methods: ['GET', 'POST'], // Métodos permitidos
+	allowedHeaders: ['Content-Type'], // Encabezados permitidos
+  };
 export class Server {
 	private readonly express: express.Express;
 	private readonly port: string;
@@ -15,7 +20,7 @@ export class Server {
 		this.port = port;
 		this.express = express();
 		this.express.use(helmet())
-		this.express.use(cors());
+		this.express.use(cors(corsOptions));
 		this.express.use(json());
 		this.express.use(urlencoded({ extended: true }));
 		this.express.use(taskRouter)

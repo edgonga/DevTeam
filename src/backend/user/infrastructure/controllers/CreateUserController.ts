@@ -12,9 +12,9 @@ export class CreateUserController {
 	}
 
 	run(req: Request, res: Response): Response {
-		const name: string = req.body.name;
-		const password: Buffer = Buffer.from(req.body.password);
-		
+		const name: string = req.body.userName;
+		const password: string = req.body.password;
+
 		this.createUser.execute(name, password);
 
 		return res.sendStatus(200);

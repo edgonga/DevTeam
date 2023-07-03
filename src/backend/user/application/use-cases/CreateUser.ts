@@ -10,11 +10,13 @@ export class CreateUser {
 		this.userRespository = userRespository;
 	}
 
-	async execute(name: string, password: string): Promise<void> {
+	execute(name: string, password: string): void {
 		try {
 			const user = new User(new Name(name), new Password(password));
-			await this.userRespository.save(user);
+			this.userRespository.save(user);
 		} catch (err) {
+			console.log(err);
+
 			throw new Error("Failed to create the User");
 		}
 	}

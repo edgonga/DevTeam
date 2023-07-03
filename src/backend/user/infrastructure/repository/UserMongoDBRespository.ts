@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/member-ordering */
+/* eslint-disable */
 import { Collection, MongoClient } from "mongodb";
 
 import { User } from "../../domain/entities/User";
@@ -45,5 +45,18 @@ export class UserMongoDBRespository implements UserRepository {
 		const userDTO = user.name;
 		console.log("TASK CREATED: ", userDTO);
 		await this.collection.insertOne(userDTO);
+	}
+
+	async getAll(): Promise<(User | null)[]> {
+		if (!this.collection) {
+			throw new Error("MongoDB collection is not initialized");
+		}
+		const userList: Array<User | null> = [];
+		const users = await this.collection.find().toArray();
+		console.log(users);
+
+		users.forEach(user => userList.push(new User(user.name, user.password)));
+
+		return userList;
 	}
 }
