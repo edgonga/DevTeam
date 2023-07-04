@@ -8,4 +8,8 @@ export class Password {
 
 		this.password = password;
 	}
+
+	public getPass(): string {
+		return this.password;
+	}
 }
