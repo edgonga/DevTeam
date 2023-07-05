@@ -5,7 +5,8 @@ import TodoList from "../components/TodoList";
 const Home = () => {
   return (
     <>
-      <TodoInput />
+        <h4>Add a task name</h4>
+        <TodoInput />
       <div className="main-list">
         <TodoList />
       </div>

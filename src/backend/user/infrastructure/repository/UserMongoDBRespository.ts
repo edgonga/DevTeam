@@ -43,7 +43,7 @@ export class UserMongoDBRespository implements UserRepository {
 			return;
 		}
 		const userDTO = user.name;
-		console.log("TASK CREATED: ", userDTO);
+		console.log("USER CREATED: ", userDTO);
 		await this.collection.insertOne(userDTO);
 	}
 

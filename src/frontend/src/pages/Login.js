@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [userName, setName] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate()
 
   const handleNameChange = (e) => {
     
@@ -18,7 +20,9 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      await fetch('localhost:8000/user', {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      await fetch('http://localhost:8000/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,6 +32,9 @@ const Login = () => {
           password,
         }),
       });
+      console.log(`User: ${userName} created`);
+
+      navigate('/home')
   
       // TODO: Handle successful login: call to repository & push the data to db
     } catch (error) {

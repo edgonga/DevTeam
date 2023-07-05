@@ -8,9 +8,9 @@ import { taskRouter } from "../task/infrastructure/routers/TaskRouter";
 import { userRouter } from "../user/infrastructure/routers/UserRouter";
 
 const corsOptions = {
-	origin: 'http://localhost:8000', // Origen permitido (URL de tu aplicación cliente)
-	methods: ['GET', 'POST'], // Métodos permitidos
-	allowedHeaders: ['Content-Type'], // Encabezados permitidos
+	origin: '*',
+	methods: ['GET', 'POST'], 
+	allowedHeaders: ['Content-Type'], 
   };
 export class Server {
 	private readonly express: express.Express;
