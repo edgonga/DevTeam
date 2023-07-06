@@ -38,7 +38,7 @@ export class UserMongoDBRespository implements UserRepository {
 		}
 		const exists = await this.collection.findOne({ name: user.name });
 		if (exists) {
-			console.error("Task already exists");
+			console.error("This User already exists");
 
 			return;
 		}
