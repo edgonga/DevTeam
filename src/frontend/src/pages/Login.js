@@ -66,7 +66,6 @@ const Login = () => {
           />
           <button type="submit">Login</button>
           <select value={selectedRepository} onChange={handleRepositoryChange}>
-            <option value="inMemory">In Memory</option>
             <option value="json">JSON</option>
             <option value="mongo">MongoDB</option>
             <option value="mysql">MySQL</option>
