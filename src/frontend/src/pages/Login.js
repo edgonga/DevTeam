@@ -37,7 +37,7 @@ const Login = () => {
         }),
       });
       console.log(`User: ${userName} created`);
-
+      window.alert(`User ${userName} created succesfully.`)
       navigate("/home");
 
       // TODO: Handle successful login: call to repository & push the data to db
