@@ -21,6 +21,7 @@ export class CreateTask {
 	}
 
 	execute(name: string, description: string, user: string): void {
+		console.log("asdasdsadsadsdasdasdasda    ", this.taskRepository);
 		const taskID = this.idGenerator.generate();
 		const startDate: Date = this.dateGenerator.generate();
 		const status = new Status(STATUS.PENDING);

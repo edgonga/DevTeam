@@ -13,13 +13,14 @@ import { DeleteTaskController } from "../controllers/DeleteTaskController";
 import { FindTaskController } from "../controllers/FindTaskController";
 import { GetAllTaskController } from "../controllers/GetAllTaskController";
 import { UpdateTaskController } from "../controllers/UpdateTaskController";
+import { TaskInMemoryRepository } from "../repository/TaskInMemoryRepository";
 import { TaskJsonRepository } from "../repository/TaskJsonRepository";
 import { TaskMongoDBRepository } from "../repository/TaskMongoDBRepository";
 import { TaskMySQLRepository } from "../repository/TaskSQLRepository";
 
 const taskRouter = express.Router();
 
-let taskRepository: TaskRepository;
+let taskRepository: TaskRepository = new TaskInMemoryRepository();
 let repository = " ";
 
 function setTaskRepository(repo: string) {
@@ -35,10 +36,10 @@ function setTaskRepository(repo: string) {
 		taskRepository = new TaskMySQLRepository();
 	}
 
-	console.log("repo initialized --> ", repo);
+	console.log("repo initialized --> ", getTaskRepository());
 }
 
-function getTaskRepository(): TaskRepository {
+function getTaskRepository() {
 	return taskRepository;
 }
 
