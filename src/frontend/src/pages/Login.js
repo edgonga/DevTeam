@@ -16,8 +16,25 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleRepositoryChange = (e) => {
+  const handleRepositoryChange = async(e) => {
+    e.preventDefault();
     setSelectedRepository(e.target.value);
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      await fetch("http://localhost:8000/repository", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          selectedRepository
+        }),
+      });
+    } catch (error) {
+      console.log("uwu", error);
+    }
   };
 
   const handleLogin = async (e) => {
@@ -33,9 +50,10 @@ const Login = () => {
         },
         body: JSON.stringify({
           userName,
-          password,
+          password
         }),
       });
+
       console.log(`User: ${userName} created`);
       window.alert(`User ${userName} created succesfully.`)
       navigate("/home");
