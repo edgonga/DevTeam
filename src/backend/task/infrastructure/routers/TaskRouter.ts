@@ -13,49 +13,63 @@ import { DeleteTaskController } from "../controllers/DeleteTaskController";
 import { FindTaskController } from "../controllers/FindTaskController";
 import { GetAllTaskController } from "../controllers/GetAllTaskController";
 import { UpdateTaskController } from "../controllers/UpdateTaskController";
-import { TaskInMemoryRepository } from "../repository/TaskInMemoryRepository";
 import { TaskJsonRepository } from "../repository/TaskJsonRepository";
 import { TaskMongoDBRepository } from "../repository/TaskMongoDBRepository";
 import { TaskMySQLRepository } from "../repository/TaskSQLRepository";
 
 const taskRouter = express.Router();
-const db = process.argv[2];
 
-let taskRepository: TaskRepository = new TaskInMemoryRepository();
+let taskRepository: TaskRepository;
+let repository = " ";
 
-if (db === "json") {
-	taskRepository = new TaskJsonRepository();
+function setTaskRepository(repo: string) {
+	if (repo === "json") {
+		taskRepository = new TaskJsonRepository();
+	}
+
+	if (repo === "mongo") {
+		taskRepository = new TaskMongoDBRepository();
+	}
+
+	if (repo === "mysql") {
+		taskRepository = new TaskMySQLRepository();
+	}
+
+	console.log(`${repo} repository created correctly`);
 }
 
-if (db === "mongo") {
-	taskRepository = new TaskMongoDBRepository();
+function getTaskRepository(): TaskRepository {
+	return taskRepository;
 }
 
-if (db === "mysql") {
-	taskRepository = new TaskMySQLRepository();
-}
+taskRouter.post("/repository", (req: Request, res: Response) => {
+	repository = req.body.selectedRepository;
+	setTaskRepository(repository);
 
-const createTask = new CreateTask(taskRepository, new IDGenerator(), new DateGenerator());
+	res.status(200);
+});
+
+const createTask = new CreateTask(getTaskRepository(), new IDGenerator(), new DateGenerator());
 const createTaskController = new CreateTaskController(createTask);
 taskRouter.post("/task", (req: Request, res: Response) => createTaskController.run(req, res));
 
-const getAllTask = new GetAllTask(taskRepository);
+const getAllTask = new GetAllTask(getTaskRepository());
 const getAllTaskController = new GetAllTaskController(getAllTask);
 taskRouter.get("/getAllTask", (req: Request, res: Response) => getAllTaskController.run(req, res));
 
-const findTask = new FindTask(taskRepository);
+const findTask = new FindTask(getTaskRepository());
 const findTaskController = new FindTaskController(findTask);
 taskRouter.post("/findTask", (req: Request, res: Response) => findTaskController.run(req, res));
 
-const deleteTask = new DeleteTask(taskRepository);
+const deleteTask = new DeleteTask(getTaskRepository());
 const deleteTaskController = new DeleteTaskController(deleteTask);
 taskRouter.get("/deleteTask", (req: Request, res: Response) => deleteTaskController.run(req, res));
 
-const updateTask = new UpdateTask(taskRepository, new DateGenerator());
+const updateTask = new UpdateTask(getTaskRepository(), new DateGenerator());
 const updateTaskController = new UpdateTaskController(updateTask);
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 taskRouter.put("/updateTask/:taskName", (req: Request, res: Response) =>
 	updateTaskController.run(req, res)
 );
 
-export { taskRouter };
+export { repository, taskRouter };
