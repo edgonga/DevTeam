@@ -20,10 +20,10 @@ const Login = () => {
     e.preventDefault();
     const selectedRepository = e.target.value;
     setSelectedRepository(selectedRepository);
-  
+
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-  
+
       await fetch("http://localhost:8000/repository", {
         method: "POST",
         headers: {
@@ -34,10 +34,9 @@ const Login = () => {
         }),
       });
     } catch (error) {
-      console.log("uwu", error);
+      console.log("Error:", error);
     }
   };
-  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -52,21 +51,18 @@ const Login = () => {
         },
         body: JSON.stringify({
           userName,
-          password
+          password,
         }),
       });
 
       console.log(`User: ${userName} created`);
-      window.alert(`User ${userName} created succesfully.`)
-      navigate("/home");
-
-      // TODO: Handle successful login: call to repository & push the data to db
+      window.alert(`User ${userName} created successfully.`);
+      navigate("/home", { state: { userName } });
     } catch (error) {
-      console.log("USER not created || ERROR on : ", error);
+      console.log("Error:", error);
     }
   };
 
-  // Submit NO logic
   return (
     <>
       <div>
@@ -74,7 +70,7 @@ const Login = () => {
         <form onSubmit={handleLogin}>
           <input
             type="name"
-            placeholder="name"
+            placeholder="Name"
             value={userName}
             onChange={handleNameChange}
           />
@@ -85,10 +81,13 @@ const Login = () => {
             onChange={handlePasswordChange}
           />
           <button type="submit">Login</button>
-          <select value={selectedRepository} onChange={handleRepositoryChange}>
-            <option value="json" onMouseDown={handleRepositoryChange}>JSON</option>
-            <option value="mongo" onMouseDown={handleRepositoryChange}>MongoDB</option>
-            <option value="mysql" onMouseDown={handleRepositoryChange}>MySQL</option>
+          <select
+            value={selectedRepository}
+            onChange={handleRepositoryChange}
+          >
+            <option value="json">JSON</option>
+            <option value="mongo">MongoDB</option>
+            <option value="mysql">MySQL</option>
           </select>
         </form>
       </div>
