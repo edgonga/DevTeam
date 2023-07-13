@@ -70,7 +70,7 @@ function defineEndpoints() {
 
 	const deleteTask = new DeleteTask(getTaskRepository());
 	const deleteTaskController = new DeleteTaskController(deleteTask);
-	taskRouter.get("/deleteTask", (req: Request, res: Response) =>
+	taskRouter.post("/deleteTask", (req: Request, res: Response) =>
 		deleteTaskController.run(req, res)
 	);
 

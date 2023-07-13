@@ -51,16 +51,41 @@ const Home = () => {
         setTaskList([...taskList, createdTask]);
 
         console.log(`Task "${taskName}" created`);
-        window.alert(`Task "${taskName}" created`);
       } else {
         console.log("Error creating task:", response.status);
-        window.alert("Error creating task. Please try again.");
+        window.alert("Error creating task.");
       }
     } catch (error) {
       console.log("Error creating task:", error);
-      window.alert("Error creating task. Please try again.");
     }
   };
+
+  const handleDeleteTask = async (taskName) => {
+    try {  
+      const response = await fetch("http://localhost:8000/deleteTask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: taskName,
+        }),
+      });
+  
+      if (response.ok) {
+        const updatedTaskList = taskList.filter((task) => task.name !== taskName);
+        setTaskList(updatedTaskList);
+  
+        console.log(`Task "${taskName}" deleted`);
+      } else {
+        console.log("Error deleting task:", response.status);
+      }
+    } catch (error) {
+      console.log("Error deleting task:", error);
+      window.alert("Error deleting task. Please try again.");
+    }
+  };
+  
 
   const handleLogout = () => {
     // TODO: Perform logout logic
@@ -128,16 +153,20 @@ const Home = () => {
               <th>Status</th>
               <th>User Creator</th>
               <th>Date of Creation</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {taskList.map((task, index) => (
-              <tr key={index}>
+            {taskList.map((task) => (
+              <tr key={task.id}>
                 <td>{task.name}</td>
                 <td>{task.description}</td>
                 <td>{task.status}</td>
                 <td>{task.user}</td>
                 <td>{task.startDate.toLocaleDateString()}</td>
+                <td>
+                  <button onClick={() => handleDeleteTask(task.name)}>Del</button>
+                </td>
               </tr>
             ))}
           </tbody>
