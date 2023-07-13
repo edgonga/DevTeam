@@ -52,7 +52,6 @@ const Home = () => {
         setTaskList([...taskList, createdTask]);
   
         console.log(`Task "${taskName}" created`);
-        window.alert(`Task "${taskName}" created`);
       } else {
         console.log("Error creating task:", response.status);
         window.alert("Error creating task. Please try again.");
