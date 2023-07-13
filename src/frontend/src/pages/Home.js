@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import TaskItem from "../components/TodoItem";
 
 const Home = () => {
   const [taskName, setTaskName] = useState("");
@@ -26,13 +25,13 @@ const Home = () => {
   const handleCreateTask = async () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-  
+
       const newTask = {
         name: taskName,
         description,
         user: userName,
       };
-  
+
       const response = await fetch("http://localhost:8000/task", {
         method: "POST",
         headers: {
@@ -40,7 +39,7 @@ const Home = () => {
         },
         body: JSON.stringify(newTask),
       });
-  
+
       if (response.ok) {
         const createdTask = {
           ...newTask,
@@ -48,10 +47,11 @@ const Home = () => {
           startDate: new Date(),
           endDate: null,
         };
-  
+
         setTaskList([...taskList, createdTask]);
-  
+
         console.log(`Task "${taskName}" created`);
+        window.alert(`Task "${taskName}" created`);
       } else {
         console.log("Error creating task:", response.status);
         window.alert("Error creating task. Please try again.");
@@ -61,7 +61,6 @@ const Home = () => {
       window.alert("Error creating task. Please try again.");
     }
   };
-  
 
   const handleLogout = () => {
     // TODO: Perform logout logic
@@ -121,9 +120,28 @@ const Home = () => {
 
       <div>
         <h2>Task List</h2>
-        {taskList.map((task, index) => (
-          <TaskItem key={index} task={task} />
-        ))}
+        <table>
+          <thead>
+            <tr>
+              <th>Task Name</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>User Creator</th>
+              <th>Date of Creation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {taskList.map((task, index) => (
+              <tr key={index}>
+                <td>{task.name}</td>
+                <td>{task.description}</td>
+                <td>{task.status}</td>
+                <td>{task.user}</td>
+                <td>{task.startDate.toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   );
