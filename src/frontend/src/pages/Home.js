@@ -62,6 +62,32 @@ const Home = () => {
       window.alert("Error creating task. Please try again.");
     }
   };
+
+  const handleDeleteTask = async (taskName) => {
+    try {  
+      const response = await fetch("http://localhost:8000/deleteTask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: taskName,
+        }),
+      });
+  
+      if (response.ok) {
+        const updatedTaskList = taskList.filter((task) => task.name !== taskName);
+        setTaskList(updatedTaskList);
+  
+        console.log(`Task "${taskName}" deleted`);
+      } else {
+        console.log("Error deleting task:", response.status);
+      }
+    } catch (error) {
+      console.log("Error deleting task:", error);
+      window.alert("Error deleting task. Please try again.");
+    }
+  };
   
 
   const handleLogout = () => {
@@ -73,21 +99,21 @@ const Home = () => {
     <>
       <div>
         <h2>Welcome to the Home Page!</h2>
-        <button onClick={handleLogout}>Logout</button>
-        <form style={{ display: "flex", flexDirection: "row" }}>
-          <input
+        <form className="form-input">
+          <input className="input"
             type="text"
             placeholder="Task Name"
             value={taskName}
             onChange={handleTaskNameChange}
           />
-          <input
+          <input className="input"
             type="text"
             placeholder="Description"
             value={description}
             onChange={handleDescriptionChange}
           />
-          <label>
+          <div className="checkbox-container">
+            <label>
             <input
               type="radio"
               value="toDo"
@@ -114,7 +140,9 @@ const Home = () => {
             />
             Done
           </label>
-          <button type="button" onClick={handleCreateTask}>
+          </div>
+          
+          <button className="button" type="button" onClick={handleCreateTask}>
             Create Task
           </button>
         </form>
@@ -126,6 +154,8 @@ const Home = () => {
           <TaskItem key={index} task={task} />
         ))}
       </div>
+      <button className="logout-button" onClick={() => handleDeleteTask(taskName)}>Delete Task</button>
+      <button className="logout-button" onClick={handleLogout}>Logout</button>
     </>
   );
 };

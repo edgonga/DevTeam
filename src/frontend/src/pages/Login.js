@@ -66,22 +66,21 @@ const Login = () => {
   return (
     <>
       <div>
-        <h2>Login</h2>
+        <h1>Login</h1>
         <form onSubmit={handleLogin}>
-          <input
+          <input className="input"
             type="name"
             placeholder="Name"
             value={userName}
             onChange={handleNameChange}
           />
-          <input
+          <input className="input"
             type="password"
             placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
           />
-          <button type="submit">Login</button>
-          <select
+          <select className="dropdown"
             value={selectedRepository}
             onChange={handleRepositoryChange}
           >
@@ -89,6 +88,7 @@ const Login = () => {
             <option value="mongo">MongoDB</option>
             <option value="mysql">MySQL</option>
           </select>
+          <button className="button" type="submit">Login</button>
         </form>
       </div>
     </>

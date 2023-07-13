@@ -2,19 +2,27 @@ import React from "react";
 
 const TaskItem = ({ task }) => {
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "auto auto auto auto auto",
-        gridColumnGap: "10px",
-      }}
-    >
-      <div>{task.taskName}</div>
-      <div>{task.description}</div>
-      <div>{task.status}</div>
-      <div>{task.createdBy}</div>
-      <div>{task.createdDate}</div>
-    </div>
+    <div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task Name</th>
+        <th>Task Description</th>
+        <th>Status</th>
+        <th>User Creator</th>
+        <th>Creation Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>${task.name}</td>
+        <td>${task.description}</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
   );
 };
 
