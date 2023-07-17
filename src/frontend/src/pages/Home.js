@@ -9,6 +9,7 @@ const Home = () => {
   const location = useLocation();
   const { state: { userName } = {} } = location;
   const [selectedStatus, setSelectedStatus] = useState(0)
+  const [taskToFind, setFindTask] = useState("")
 
   const handleTaskNameChange = (e) => {
     setTaskName(e.target.value);
@@ -127,6 +128,32 @@ const Home = () => {
     }
   };
 
+  const handleFindTasK = async(taskToFind) => {
+    try {
+
+      const response = await fetch("http://localhost:8000/findTask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: taskName,
+        }),
+      });
+      if (response.ok) {
+        setFindTask(taskToFind);
+        console.log(`Task "${taskToFind}" founded`);
+      } else {
+        console.log("Error finding task:", response.status);
+      }
+
+
+    } catch (error) {
+      console.log("Error updating task:", error);
+      window.alert("Error updating task. Please try again.");
+    }
+  }
+
   const handleLogout = () => {
     // TODO: Perform logout logic
     navigate("/");
@@ -177,11 +204,11 @@ const Home = () => {
         <td>{task.name}</td>
         <td>{task.description}</td>
         <td><div className="checkbox-container">
-            <label style={{display: "block"}}>
+            <label>
             <input
               type="radio"
               value={0}
-              hecked={selectedStatus === 0}
+              checked={selectedStatus === 0}
               onChange={()=>handleStatusUpdate(task, 0)}
             />
             To Do 
@@ -215,6 +242,41 @@ const Home = () => {
 </div>
         ))}
       </div>
+      <input className="input"
+            type="text"
+            placeholder="Find task"
+            value={taskToFind}
+            onChange={handleFindTasK}
+          />
+      <div>
+        <h2>Task founded</h2>
+        {taskList.map((task, index) => (
+          <div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task Name</th>
+        <th>Task Description</th>
+        <th>Status</th>
+        <th>User Creator</th>
+        <th>Creation Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{task.name}</td>
+        <td>{task.description}</td>
+        <td>{task.status}</td>
+        <td>{task.user}</td>
+        <td>{task.startDate.toLocaleDateString()}</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+        ))}
+      </div>
+      
       <button className="logout-button" onClick={handleLogout}>Logout</button>
     </>
   );
