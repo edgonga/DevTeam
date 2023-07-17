@@ -130,60 +130,84 @@ const Home = () => {
   return (
     <>
       <div>
-        <h2>Tasks list</h2>
-        <button onClick={handleLogout}>Logout</button>
-        <form style={{ display: "flex", flexDirection: "row" }}>
-          <input
+        <h2>Welcome to the Home Page!</h2>
+        <form className="form-input">
+          <input className="input"
             type="text"
             placeholder="Task Name"
             value={taskName}
             onChange={handleTaskNameChange}
           />
-          <input
+          <input className="input"
             type="text"
             placeholder="Description"
             value={description}
             onChange={handleDescriptionChange}
           />
-          <button type="button" onClick={handleCreateTask}>
+          
+          
+          <button className="button" type="button" onClick={handleCreateTask}>
             Create Task
           </button>
         </form>
       </div>
 
       <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Task Name</th>
-              <th>Description</th>
-              <th>User Creator</th>
-              <th>Date of Creation</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {taskList.map((task) => (
-              <tr key={task.id}>
-                <td>{task.name}</td>
-                <td>{task.description}</td>
-                <td>{task.user}</td>
-                <td>{task.startDate.toLocaleDateString()}</td>
-                <td>
-                  {task.status === "PENDING" && (
-                    <>
-                      <button onClick={() => handleStatusUpdate(task, "TO_DO")}>To Do</button>
-                      <button onClick={() => handleStatusUpdate(task, "ON_GOING")}>On Going</button>
-                      <button onClick={() => handleStatusUpdate(task, "DONE")}>Done</button>
-                    </>
-                  )}
-                  <button onClick={() => handleDeleteTask(task.name)}>Del</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <h2>Task List</h2>
+        {taskList.map((task, index) => (
+          <div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task Name</th>
+        <th>Task Description</th>
+        <th>Status</th>
+        <th>User Creator</th>
+        <th>Creation Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{task.name}</td>
+        <td>{task.description}</td>
+        <td><div className="checkbox-container">
+            <label style={{display: "block"}}>
+            <input
+              type="radio"
+              value="toDo"
+              onChange={handleStatusUpdate(task, 0)}
+            />
+            To Do 
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="onGoing"
+              onChange={handleStatusUpdate(task, 1)}
+            />
+            On Going 
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="Done"
+              onChange={handleStatusUpdate(task, 2)}
+            />
+            Done
+          </label>
+          </div></td>
+        <td>{task.user}</td>
+        <td>{task.startDate.toLocaleDateString()}</td>
+        <td><button className="logout-button" onClick={() => handleDeleteTask(task.name)}>Delete</button></td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+        ))}
       </div>
+      <button className="logout-button" onClick={handleLogout}>Logout</button>
     </>
   );
 };

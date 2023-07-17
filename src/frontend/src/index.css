@@ -20,6 +20,25 @@ code {
   align-content: center;
 }
 
+.input {
+  align-content: center;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+  margin: 10px;
+}
+
+.input:focus {
+  border-color: #2196f3;
+  outline: none;
+}
+
+.input::placeholder {
+  color: #888888;
+}
+
 .list {
   
   list-style-type: none;
@@ -71,6 +90,68 @@ code {
 
 .form-input{
   margin: 10px;
+  align-content: center;
+  
+}
+
+.logout-button{
+  align-content: center;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  background-color: #f44336;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 15px;
+
+}
+
+.button {
+  display: inline-block;
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50px;
+  background-color: #ff5722;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+  background-color: #f4511e;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.button:active {
+  background-color: #e64a19;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(2px);
+}
+
+.logout-button:hover{
+  background-color: #c62828;
+}
+
+.checkbox-container {
+  margin: 10px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container label {
+  margin-right: 20px;
 }
 
 .add-task{
@@ -99,4 +180,92 @@ code {
 .icon-plus{
   position: relative;
   top: 1.5px;
+}
+
+.table-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  max-width: 100%; 
+  margin: 20px auto; 
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  display: "flex";
+  flex-direction: row;
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  align-items: "center";
+}
+
+.table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.table .large-cell {
+  font-size: 18px;
+}
+
+.table tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown {
+  margin-left: 15px;
+  margin-right: 20px;
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  font-size: 20px;
+}
+
+.dropdown-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.dropdown-select:focus {
+  border-color: #2196f3;
+  outline: none;
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 200px; /* Ajusta este valor según la altura deseada */
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.dropdown-option {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dropdown-option:hover {
+  background-color: #f5f5f5;
 }
