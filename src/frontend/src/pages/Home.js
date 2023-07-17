@@ -8,6 +8,7 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state: { userName } = {} } = location;
+  const [selectedStatus, setSelectedStatus] = useState(0)
 
   const handleTaskNameChange = (e) => {
     setTaskName(e.target.value);
@@ -82,6 +83,10 @@ const Home = () => {
   };
 
   const handleStatusUpdate = async (task, newStatus) => {
+    
+    const newStatusSelected = parseInt(task.target.value);
+    setSelectedStatus(newStatusSelected)
+    
     try {
       const response = await fetch("http://localhost:8000/updateTask/" + task.name, {
         method: "PUT",
@@ -175,24 +180,27 @@ const Home = () => {
             <label style={{display: "block"}}>
             <input
               type="radio"
-              value="toDo"
-              onChange={handleStatusUpdate(task, 0)}
+              value={0}
+              hecked={selectedStatus === 0}
+              onChange={handleStatusUpdate}
             />
             To Do 
           </label>
           <label>
             <input
               type="radio"
-              value="onGoing"
-              onChange={handleStatusUpdate(task, 1)}
+              value={1}
+              checked={selectedStatus === 1}
+              onChange={handleStatusUpdate}
             />
             On Going 
           </label>
           <label>
             <input
               type="radio"
-              value="Done"
-              onChange={handleStatusUpdate(task, 2)}
+              value={2}
+              checked={selectedStatus === 2}
+              onChange={handleStatusUpdate}
             />
             Done
           </label>
