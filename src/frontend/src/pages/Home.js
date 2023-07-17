@@ -112,35 +112,7 @@ const Home = () => {
             value={description}
             onChange={handleDescriptionChange}
           />
-          <div className="checkbox-container">
-            <label>
-            <input
-              type="radio"
-              value="toDo"
-              checked={status === "toDo"}
-              onChange={handleStatusChange}
-            />
-            To Do
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="onGoing"
-              checked={status === "onGoing"}
-              onChange={handleStatusChange}
-            />
-            On Going
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="Done"
-              checked={status === "Done"}
-              onChange={handleStatusChange}
-            />
-            Done
-          </label>
-          </div>
+          
           
           <button className="button" type="button" onClick={handleCreateTask}>
             Create Task
@@ -151,10 +123,61 @@ const Home = () => {
       <div>
         <h2>Task List</h2>
         {taskList.map((task, index) => (
-          <TaskItem key={index} task={task} />
+          <div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task Name</th>
+        <th>Task Description</th>
+        <th>Status</th>
+        <th>User Creator</th>
+        <th>Creation Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{task.name}</td>
+        <td>{task.description}</td>
+        <td><div className="checkbox-container">
+            <label style={{display: "block"}}>
+            <input
+              type="radio"
+              value="toDo"
+              checked={status === "toDo"}
+              onChange={handleStatusChange}
+            />
+            To Do 
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="onGoing"
+              checked={status === "onGoing"}
+              onChange={handleStatusChange}
+            />
+            On Going 
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="Done"
+              checked={status === "Done"}
+              onChange={handleStatusChange}
+            />
+            Done
+          </label>
+          </div></td>
+        <td>{task.user}</td>
+        <td>{task.startDate.toLocaleDateString()}</td>
+        <td><button className="logout-button" onClick={() => handleDeleteTask(task.name)}>Delete</button></td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
         ))}
       </div>
-      <button className="logout-button" onClick={() => handleDeleteTask(taskName)}>Delete Task</button>
       <button className="logout-button" onClick={handleLogout}>Logout</button>
     </>
   );
