@@ -84,8 +84,8 @@ const Home = () => {
 
   const handleStatusUpdate = async (task, newStatus) => {
     
-    const newStatusSelected = parseInt(task.target.value);
-    setSelectedStatus(newStatusSelected)
+    const newStatusSelected = parseInt(newStatus);
+    setSelectedStatus(newStatusSelected);
     
     try {
       const response = await fetch("http://localhost:8000/updateTask/" + task.name, {
@@ -182,7 +182,7 @@ const Home = () => {
               type="radio"
               value={0}
               hecked={selectedStatus === 0}
-              onChange={handleStatusUpdate}
+              onChange={()=>handleStatusUpdate(task, 0)}
             />
             To Do 
           </label>
@@ -191,7 +191,7 @@ const Home = () => {
               type="radio"
               value={1}
               checked={selectedStatus === 1}
-              onChange={handleStatusUpdate}
+              onChange={()=>handleStatusUpdate(task, 1)}
             />
             On Going 
           </label>
@@ -200,7 +200,7 @@ const Home = () => {
               type="radio"
               value={2}
               checked={selectedStatus === 2}
-              onChange={handleStatusUpdate}
+              onChange={()=>handleStatusUpdate(task, 2)}
             />
             Done
           </label>
