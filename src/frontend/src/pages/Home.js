@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 const Home = () => {
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
   const [taskList, setTaskList] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,10 +15,6 @@ const Home = () => {
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
-  };
-
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
   };
 
   const handleCreateTask = async () => {
@@ -61,7 +56,7 @@ const Home = () => {
   };
 
   const handleDeleteTask = async (taskName) => {
-    try {  
+    try {
       const response = await fetch("http://localhost:8000/deleteTask", {
         method: "POST",
         headers: {
@@ -71,11 +66,11 @@ const Home = () => {
           name: taskName,
         }),
       });
-  
+
       if (response.ok) {
         const updatedTaskList = taskList.filter((task) => task.name !== taskName);
         setTaskList(updatedTaskList);
-  
+
         console.log(`Task "${taskName}" deleted`);
       } else {
         console.log("Error deleting task:", response.status);
@@ -85,7 +80,47 @@ const Home = () => {
       window.alert("Error deleting task. Please try again.");
     }
   };
-  
+
+  const handleStatusUpdate = async (task, newStatus) => {
+    try {
+      const response = await fetch("http://localhost:8000/updateTask/" + task.name, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: newStatus,
+          name : task.name,
+          description : task.description
+        }),
+      });
+
+      if (response.ok) {
+        const updatedTaskList = taskList.map((e) => {
+          if (e.name === task.name) {
+            console.log(e);
+            return {
+              name : e.name,
+              description : e.description, 
+              status: newStatus,
+              startDate : e.startDate,
+              user : e.user,
+            };
+          }
+          return e;
+        });
+
+        setTaskList(updatedTaskList);
+
+        console.log(`Task "${taskName}" updated with status "${newStatus}"`);
+      } else {
+        console.log("Error updating task:", response.status);
+      }
+    } catch (error) {
+      console.log("Error updating task:", error);
+      window.alert("Error updating task. Please try again.");
+    }
+  };
 
   const handleLogout = () => {
     // TODO: Perform logout logic
@@ -95,7 +130,7 @@ const Home = () => {
   return (
     <>
       <div>
-        <h2>Welcome to the Home Page!</h2>
+        <h2>Tasks list</h2>
         <button onClick={handleLogout}>Logout</button>
         <form style={{ display: "flex", flexDirection: "row" }}>
           <input
@@ -110,33 +145,6 @@ const Home = () => {
             value={description}
             onChange={handleDescriptionChange}
           />
-          <label>
-            <input
-              type="radio"
-              value="toDo"
-              checked={status === "toDo"}
-              onChange={handleStatusChange}
-            />
-            To Do
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="onGoing"
-              checked={status === "onGoing"}
-              onChange={handleStatusChange}
-            />
-            On Going
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="Done"
-              checked={status === "Done"}
-              onChange={handleStatusChange}
-            />
-            Done
-          </label>
           <button type="button" onClick={handleCreateTask}>
             Create Task
           </button>
@@ -144,13 +152,11 @@ const Home = () => {
       </div>
 
       <div>
-        <h2>Task List</h2>
         <table>
           <thead>
             <tr>
               <th>Task Name</th>
               <th>Description</th>
-              <th>Status</th>
               <th>User Creator</th>
               <th>Date of Creation</th>
               <th>Actions</th>
@@ -161,10 +167,16 @@ const Home = () => {
               <tr key={task.id}>
                 <td>{task.name}</td>
                 <td>{task.description}</td>
-                <td>{task.status}</td>
                 <td>{task.user}</td>
                 <td>{task.startDate.toLocaleDateString()}</td>
                 <td>
+                  {task.status === "PENDING" && (
+                    <>
+                      <button onClick={() => handleStatusUpdate(task, "TO_DO")}>To Do</button>
+                      <button onClick={() => handleStatusUpdate(task, "ON_GOING")}>On Going</button>
+                      <button onClick={() => handleStatusUpdate(task, "DONE")}>Done</button>
+                    </>
+                  )}
                   <button onClick={() => handleDeleteTask(task.name)}>Del</button>
                 </td>
               </tr>
