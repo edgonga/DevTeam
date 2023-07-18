@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Home = () => {
@@ -8,8 +8,8 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state: { userName } = {} } = location;
-  const [selectedStatus, setSelectedStatus] = useState(0)
-  const [taskToFind, setFindTask] = useState("")
+  const [selectedStatus, setSelectedStatus] = useState(0);
+  const [taskToFind, setFindTask] = useState("");
 
   const handleTaskNameChange = (e) => {
     setTaskName(e.target.value);
@@ -70,7 +70,9 @@ const Home = () => {
       });
 
       if (response.ok) {
-        const updatedTaskList = taskList.filter((task) => task.name !== taskName);
+        const updatedTaskList = taskList.filter(
+          (task) => task.name !== taskName
+        );
         setTaskList(updatedTaskList);
 
         console.log(`Task "${taskName}" deleted`);
@@ -84,33 +86,35 @@ const Home = () => {
   };
 
   const handleStatusUpdate = async (task, newStatus) => {
-    
     const newStatusSelected = parseInt(newStatus);
     setSelectedStatus(newStatusSelected);
-    
+
     try {
-      const response = await fetch("http://localhost:8000/updateTask/" + task.name, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          status: newStatus,
-          name : task.name,
-          description : task.description
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:8000/updateTask/" + task.name,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status: newStatus,
+            name: task.name,
+            description: task.description,
+          }),
+        }
+      );
 
       if (response.ok) {
         const updatedTaskList = taskList.map((e) => {
           if (e.name === task.name) {
             console.log(e);
             return {
-              name : e.name,
-              description : e.description, 
+              name: e.name,
+              description: e.description,
               status: newStatus,
-              startDate : e.startDate,
-              user : e.user,
+              startDate: e.startDate,
+              user: e.user,
             };
           }
           return e;
@@ -128,31 +132,45 @@ const Home = () => {
     }
   };
 
-  const handleFindTasK = async(taskToFind) => {
-    try {
+  const handleFindTaskChange = (e) => {
+    setFindTask(e.target.value);
+  };
 
-      const response = await fetch("http://localhost:8000/findTask", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: taskName,
-        }),
-      });
-      if (response.ok) {
-        setFindTask(taskToFind);
-        console.log(`Task "${taskToFind}" found`);
-      } else {
-        console.log("Error finding task:", response.status);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+
+  useEffect(() => {
+    const fetchFilteredTasks = async () => {
+      try {
+        if (!taskToFind) {
+          setFilteredTasks([]);
+          return;
+        }
+
+        const response = await fetch("http://localhost:8000/findTask", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: taskToFind,
+          }),
+        });
+
+        if (response.ok) {
+          const filteredTaskList = await response.json();
+          setFilteredTasks(filteredTaskList);
+          console.log("found task -> ", filteredTaskList);
+        } else {
+          console.log("Error finding tasks:", response.status);
+        }
+      } catch (error) {
+        console.log("Error finding tasks:", error);
+        window.alert("Error finding tasks. Please try again.");
       }
+    };
 
-
-    } catch (error) {
-      console.log("Error updating task:", error);
-      window.alert("Error updating task. Please try again.");
-    }
-  }
+    fetchFilteredTasks();
+  }, [taskToFind]);
 
   const handleLogout = () => {
     // TODO: Perform logout logic
@@ -162,22 +180,23 @@ const Home = () => {
   return (
     <>
       <div>
-        <h2>Welcome to the Home Page!</h2>
+        <h2>Create your task!</h2>
         <form className="form-input">
-          <input className="input"
+          <input
+            className="input"
             type="text"
             placeholder="Task Name"
             value={taskName}
             onChange={handleTaskNameChange}
           />
-          <input className="input"
+          <input
+            className="input"
             type="text"
             placeholder="Description"
             value={description}
             onChange={handleDescriptionChange}
           />
-          
-          
+
           <button className="button" type="button" onClick={handleCreateTask}>
             Create Task
           </button>
@@ -187,97 +206,115 @@ const Home = () => {
       <div>
         <h2>Task List</h2>
         {taskList.map((task, index) => (
-          <div class="table-container">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Task Name</th>
-        <th>Task Description</th>
-        <th>Status</th>
-        <th>User Creator</th>
-        <th>Creation Date</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{task.name}</td>
-        <td>{task.description}</td>
-        <td><div className="checkbox-container">
-            <label>
-            <input
-              type="radio"
-              value={0}
-              checked={selectedStatus === 0}
-              onChange={()=>handleStatusUpdate(task, 0)}
-            />
-            To Do 
-          </label>
-          <label>
-            <input
-              type="radio"
-              value={1}
-              checked={selectedStatus === 1}
-              onChange={()=>handleStatusUpdate(task, 1)}
-            />
-            On Going 
-          </label>
-          <label>
-            <input
-              type="radio"
-              value={2}
-              checked={selectedStatus === 2}
-              onChange={()=>handleStatusUpdate(task, 2)}
-            />
-            Done
-          </label>
-          </div></td>
-        <td>{task.user}</td>
-        <td>{task.startDate.toLocaleDateString()}</td>
-        <td><button className="logout-button" onClick={() => handleDeleteTask(task.name)}>Delete</button></td>
-
-      </tr>
-    </tbody>
-  </table>
-</div>
+          <div className="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Task Name</th>
+                  <th>Task Description</th>
+                  <th>Status</th>
+                  <th>User Creator</th>
+                  <th>Creation Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{task.name}</td>
+                  <td>{task.description}</td>
+                  <td>
+                    <div className="checkbox-container">
+                      <label>
+                        <input
+                          type="radio"
+                          value={0}
+                          checked={selectedStatus === 0}
+                          onChange={() => handleStatusUpdate(task, 0)}
+                        />
+                        To Do
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          value={1}
+                          checked={selectedStatus === 1}
+                          onChange={() => handleStatusUpdate(task, 1)}
+                        />
+                        On Going
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          value={2}
+                          checked={selectedStatus === 2}
+                          onChange={() => handleStatusUpdate(task, 2)}
+                        />
+                        Done
+                      </label>
+                    </div>
+                  </td>
+                  <td>{task.user}</td>
+                  <td>{task.startDate.toLocaleDateString()}</td>
+                  <td>
+                    <button
+                      className="logout-button"
+                      onClick={() => handleDeleteTask(task.name)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         ))}
       </div>
-      <input className="input"
-            type="text"
-            placeholder="Find task"
-            value={taskToFind}
-            onChange={handleFindTasK}
-          />
+      <input
+        className="input"
+        type="text"
+        placeholder="Find task"
+        value={taskToFind}
+        onChange={handleFindTaskChange}
+      />
+
       <div>
         <h2>Task found</h2>
-        {taskList.map((task, index) => (
-          <div class="table-container">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Task Name</th>
-        <th>Task Description</th>
-        <th>Status</th>
-        <th>User Creator</th>
-        <th>Creation Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{task.name}</td>
-        <td>{task.description}</td>
-        <td>{task.status}</td>
-        <td>{task.user}</td>
-        <td>{task.startDate.toLocaleDateString()}</td>
-
-      </tr>
-    </tbody>
-  </table>
-</div>
-        ))}
+        {filteredTasks && filteredTasks.length > 0 ? (
+          <div>
+            <h2>Task found</h2>
+            <div className="table-container">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Task Name</th>
+                    <th>Task Description</th>
+                    <th>Status</th>
+                    <th>User Creator</th>
+                    <th>Creation Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredTasks.map((task, index) => (
+                    <tr key={index}>
+                      <td>{task.name}</td>
+                      <td>{task.description}</td>
+                      <td>{task.status}</td>
+                      <td>{task.user}</td>
+                      <td>{task.startDate.toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ) : (
+          <p>No matching tasks found.</p>
+        )}
       </div>
-      
-      <button className="logout-button" onClick={handleLogout}>Logout</button>
+
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
     </>
   );
 };
