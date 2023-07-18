@@ -142,7 +142,7 @@ const Home = () => {
       });
       if (response.ok) {
         setFindTask(taskToFind);
-        console.log(`Task "${taskToFind}" founded`);
+        console.log(`Task "${taskToFind}" found`);
       } else {
         console.log("Error finding task:", response.status);
       }
@@ -249,7 +249,7 @@ const Home = () => {
             onChange={handleFindTasK}
           />
       <div>
-        <h2>Task founded</h2>
+        <h2>Task found</h2>
         {taskList.map((task, index) => (
           <div class="table-container">
   <table class="table">
