@@ -136,13 +136,13 @@ const Home = () => {
     setFindTask(e.target.value);
   };
 
-  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [task, setTask] = useState(null);
 
   useEffect(() => {
-    const fetchFilteredTasks = async () => {
+    const fetchFilteredTask = async () => {
       try {
         if (!taskToFind) {
-          setFilteredTasks([]);
+          setTask(null);
           return;
         }
 
@@ -157,19 +157,19 @@ const Home = () => {
         });
 
         if (response.ok) {
-          const filteredTaskList = await response.json();
-          setFilteredTasks(filteredTaskList);
-          console.log("found task -> ", filteredTaskList);
+          const filteredTask = await response.json();
+          setTask(filteredTask);
+          console.log("found task -> ", filteredTask);
         } else {
-          console.log("Error finding tasks:", response.status);
+          console.log("Error finding task:", response.status);
         }
       } catch (error) {
-        console.log("Error finding tasks:", error);
-        window.alert("Error finding tasks. Please try again.");
+        console.log("Error finding task:", error);
+        window.alert("Error finding task. Please try again.");
       }
     };
 
-    fetchFilteredTasks();
+    fetchFilteredTask();
   }, [taskToFind]);
 
   const handleLogout = () => {
@@ -207,7 +207,7 @@ const Home = () => {
         <h2>Task List</h2>
         {taskList.map((task, index) => (
           <div className="table-container">
-            <table class="table">
+            <table className="table">
               <thead>
                 <tr>
                   <th>Task Name</th>
@@ -279,36 +279,31 @@ const Home = () => {
 
       <div>
         <h2>Task found</h2>
-        {filteredTasks && filteredTasks.length > 0 ? (
-          <div>
-            <h2>Task found</h2>
-            <div className="table-container">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Task Name</th>
-                    <th>Task Description</th>
-                    <th>Status</th>
-                    <th>User Creator</th>
-                    <th>Creation Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredTasks.map((task, index) => (
-                    <tr key={index}>
-                      <td>{task.name}</td>
-                      <td>{task.description}</td>
-                      <td>{task.status}</td>
-                      <td>{task.user}</td>
-                      <td>{task.startDate.toLocaleDateString()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+        {task ? (
+          <div className="table-container">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Task Name</th>
+                  <th>Task Description</th>
+                  <th>Status</th>
+                  <th>User Creator</th>
+                  <th>Creation Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{task.taskName}</td>
+                  <td>{task.taskDescription}</td>
+                  <td>{task.status.status}</td>
+                  <td>{task.userTaskCreator}</td>
+                  <td>{task.startDate}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         ) : (
-          <p>No matching tasks found.</p>
+          <p>No matching task found.</p>
         )}
       </div>
 
