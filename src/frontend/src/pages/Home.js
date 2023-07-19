@@ -132,6 +132,19 @@ const Home = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "";
+    }
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    };
+    return date.toLocaleDateString(undefined, options);
+  };
+
   const handleFindTaskChange = (e) => {
     setFindTask(e.target.value);
   };
@@ -274,7 +287,6 @@ const Home = () => {
         value={taskToFind}
         onChange={handleFindTaskChange}
       />
-
       <div>
         <h2>Task found</h2>
         {task ? (
@@ -295,7 +307,7 @@ const Home = () => {
                   <td>{task.taskDescription}</td>
                   <td>{task.status.status}</td>
                   <td>{task.userTaskCreator}</td>
-                  <td>{task.startDate}</td>
+                  <td>{formatDate(task.startDate)}</td>
                 </tr>
               </tbody>
             </table>
@@ -304,7 +316,6 @@ const Home = () => {
           <p>No matching task found.</p>
         )}
       </div>
-
       <button className="logout-button" onClick={handleLogout}>
         Logout
       </button>
