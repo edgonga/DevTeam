@@ -10,6 +10,7 @@ const Home = () => {
   const { state: { userName } = {} } = location;
   const [selectedStatus, setSelectedStatus] = useState(0);
   const [taskToFind, setFindTask] = useState("");
+  const [getAllTask, setGetAllTask] = useState("")
 
   const handleTaskNameChange = (e) => {
     setTaskName(e.target.value);
@@ -86,7 +87,7 @@ const Home = () => {
   };
 
   const handleStatusUpdate = async (task, newStatus) => {
-    const newStatusSelected = parseInt(newStatus);
+    const newStatusSelected = newStatus;
     setSelectedStatus(newStatusSelected);
 
     try {
@@ -171,6 +172,40 @@ const Home = () => {
 
     fetchFilteredTask();
   }, [taskToFind]);
+
+  const handleGetAllTask = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/getAllTask", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      if (response.ok) {
+        const allTasks = await response.json();
+        //setGetAllTask(allTasks);
+        console.log("All tasks -> ", allTasks);
+
+        const jsonString = JSON.stringify(allTasks, null, 2)
+        const blob = new Blob([jsonString], {type: "application/json"})
+        const url = URL.createObjectURL(blob)
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = url;
+        downloadLink.download = "allTasks.json"; 
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+  
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(url);
+
+      } else {
+        console.log("Error in retrieving all tasks: ", response.status);
+      };
+  } catch (error) {
+    console.log("Error finding all task:", error);
+    window.alert("Error finding all task. Please try again.");
+  }}
 
   const handleLogout = () => {
     // TODO: Perform logout logic
@@ -306,7 +341,9 @@ const Home = () => {
           <p>No matching task found.</p>
         )}
       </div>
-
+      <button className="get-all-tasks-button" onClick={handleGetAllTask}>
+      Get all Tasks
+      </button>
       <button className="logout-button" onClick={handleLogout}>
         Logout
       </button>
