@@ -8,7 +8,7 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state: { userName } = {} } = location;
-  const [selectedStatus, setSelectedStatus] = useState(0);
+  const [selectedStatus, setSelectedStatus] = useState("TO DO");
   const [taskToFind, setFindTask] = useState("");
 
   const handleTaskNameChange = (e) => {
@@ -86,7 +86,7 @@ const Home = () => {
   };
 
   const handleStatusUpdate = async (task, newStatus) => {
-    const newStatusSelected = parseInt(newStatus);
+    const newStatusSelected = newStatus;
     setSelectedStatus(newStatusSelected);
 
     try {
@@ -223,35 +223,33 @@ const Home = () => {
                   <td>{task.name}</td>
                   <td>{task.description}</td>
                   <td>
-                    <div className="checkbox-container">
-                      <label>
-                        <input
-                          type="radio"
-                          value={"TO DO"}
-                          checked={selectedStatus === "TO DO"}
-                          onChange={() => handleStatusUpdate(task, "TO DO")}
-                        />
-                        To Do
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          value={"PENDING"}
-                          checked={selectedStatus === "PENDING"}
-                          onChange={() => handleStatusUpdate(task, "PENDING")}
-                        />
-                        Pending
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          value={"DONE"}
-                          checked={selectedStatus === "DONE"}
-                          onChange={() => handleStatusUpdate(task, "DONE")}
-                        />
-                        Done
-                      </label>
-                    </div>
+                    <label>
+                      <input
+                        type="radio"
+                        value="TO DO"
+                        checked={selectedStatus === "TO DO"}
+                        onChange={() => handleStatusUpdate(task, "TO DO")}
+                      />
+                      To Do
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="PENDING"
+                        checked={selectedStatus === "PENDING"}
+                        onChange={() => handleStatusUpdate(task, "PENDING")}
+                      />
+                      Pending
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="DONE"
+                        checked={selectedStatus === "DONE"}
+                        onChange={() => handleStatusUpdate(task, "DONE")}
+                      />
+                      Done
+                    </label>
                   </td>
                   <td>{task.user}</td>
                   <td>{task.startDate.toLocaleDateString()}</td>
