@@ -14,18 +14,14 @@ const Navbar = () => {
   return (
     <div className="nav">
       <div className="navbar-main">
-        <div>
-          <button onClick={toHome}>
-            <AiOutlineHome />{" "}
-          </button>
-        </div>
+
         {!isLoggedIn ? (
           <div>
             <button onClick={toLogIn}>
               {" "}
               <BiLogIn />{" "}
             </button>
-            <button onClick={toSignUp}>
+            <button onClick={toLogIn}>
               {" "}
               <BsPersonAdd />{" "}
             </button>

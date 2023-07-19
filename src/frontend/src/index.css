@@ -269,3 +269,28 @@ code {
 .dropdown-option:hover {
   background-color: #f5f5f5;
 }
+
+.get-all-tasks-button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  background-color: #2196f3; 
+  color: #ffffff; 
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 15px;
+}
+
+.get-all-tasks-button:hover {
+  background-color: #0d8bf3; 
+}
+
+
+.get-all-tasks-button:active {
+  background-color: #0d72c0; 
+}
