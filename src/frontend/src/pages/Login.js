@@ -16,9 +16,10 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleRepositoryChange = async(e) => {
+  const handleRepositoryChange = async (e) => {
     e.preventDefault();
-    setSelectedRepository(e.target.value);
+    const selectedRepository = e.target.value;
+    setSelectedRepository(selectedRepository);
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -29,11 +30,11 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          selectedRepository
+          selectedRepository: selectedRepository,
         }),
       });
     } catch (error) {
-      console.log("uwu", error);
+      console.log("Error:", error);
     }
   };
 
@@ -55,39 +56,39 @@ const Login = () => {
       });
 
       console.log(`User: ${userName} created`);
-      window.alert(`User ${userName} created succesfully.`)
-      navigate("/home");
-
-      // TODO: Handle successful login: call to repository & push the data to db
+      window.alert(`User ${userName} created successfully.`);
+      navigate("/home", { state: { userName } });
     } catch (error) {
-      console.log("USER not created || ERROR on : ", error);
+      console.log("Error:", error);
     }
   };
 
-  // Submit NO logic
   return (
     <>
       <div>
-        <h2>Login</h2>
+        <h1>Login</h1>
         <form onSubmit={handleLogin}>
-          <input
+          <input className="input"
             type="name"
-            placeholder="name"
+            placeholder="Name"
             value={userName}
             onChange={handleNameChange}
           />
-          <input
+          <input className="input"
             type="password"
             placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
           />
-          <select value={selectedRepository} onChange={handleRepositoryChange}>
+          <select className="dropdown"
+            value={selectedRepository}
+            onChange={handleRepositoryChange}
+          >
             <option value="json">JSON</option>
             <option value="mongo">MongoDB</option>
             <option value="mysql">MySQL</option>
           </select>
-          <button type="submit">Login</button>
+          <button className="button" type="submit">Login</button>
         </form>
       </div>
     </>

@@ -1,8 +1,8 @@
 /*  eslint-disable */
 export enum STATUS {
-    PENDING = 0,
-    ON_GOING = 1,
-    DONE = 2
+    PENDING = "PENDING",
+    ON_GOING = "ON_GOING",
+    DONE = "DONE"
 }
 
 export class Status {

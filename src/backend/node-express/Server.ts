@@ -9,7 +9,7 @@ import { userRouter } from "../user/infrastructure/routers/UserRouter";
 
 const corsOptions = {
 	origin: '*',
-	methods: ['GET', 'POST'], 
+	methods: ['GET', 'POST', 'PUT'], 
 	allowedHeaders: ['Content-Type'], 
   };
 export class Server {

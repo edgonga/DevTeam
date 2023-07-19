@@ -23,7 +23,7 @@ export class UpdateTask {
 			task.taskName = newName;
 			task.taskDescription = newDescr;
 
-			if (newStatus === 2) {
+			if (newStatus === "DONE") {
 				task.endDate = this.dateGenerator.generate();
 			} else {
 				task.endDate = null;

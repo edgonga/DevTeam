@@ -1,29 +1,29 @@
-import React, { useContext, useRef, useEffect } from "react";
-import { TodoContext } from "../context/TodoContext";
-import { ImBin2 } from "react-icons/im";
+import React from "react";
 
-const TodoItem = ({ todo }) => {
-  const itemRef = useRef(null);
-
-  useEffect(() => {
-    if (itemRef.current) {
-      itemRef.current.classList.add("todo-item-enter-active");
-    }
-  }, []);
-
-  const { handleTodoDelete } = useContext(TodoContext);
-
+const TaskItem = ({ task }) => {
   return (
-    <li ref={itemRef} className="todo-item-enter">
-      {todo.text}
-      <ImBin2
-        className="bin"
-        onClick={() => {
-          handleTodoDelete(todo.id);
-        }}
-      />
-    </li>
+    <div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task Name</th>
+        <th>Task Description</th>
+        <th>Status</th>
+        <th>User Creator</th>
+        <th>Creation Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>${task.name}</td>
+        <td>${task.description}</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
   );
 };
 
-export default TodoItem;
+export default TaskItem;
