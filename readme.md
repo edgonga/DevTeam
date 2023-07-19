@@ -24,7 +24,7 @@ To start the server in development mode, run the following script:
 ```bash
 npm run dev
 ```
-Then, open http://localhost:8000 to access the server.
+Then, open http://localhost:3000 to access the server.
 
 
 ### 🚀 Production
