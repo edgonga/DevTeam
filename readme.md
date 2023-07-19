@@ -1,6 +1,7 @@
 # 🦋 To do app
 
-⚡ Project built with Typescript and Node.js using Test Driven Development (TDD) practices. \n
+⚡ Project built with Typescript and Node.js using Test Driven Development (TDD) practices.
+
 🚀 Frontend construct with React
 
 ### 📥 Installation
