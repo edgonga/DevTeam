@@ -5,17 +5,15 @@ import { Password } from "../../domain/value-objects/Password";
 
 export class CreateUser {
 	private readonly userRespository: UserRepository;
-	private repos = "";
 
 	constructor(userRespository: UserRepository) {
 		this.userRespository = userRespository;
 	}
 
-	execute(name: string, password: string, repo: string): void {
+	execute(name: string, password: string): void {
 		try {
 			const user = new User(new Name(name), new Password(password));
 			this.userRespository.save(user);
-			this.repos = repo;
 		} catch (err) {
 			console.log(err);
 
