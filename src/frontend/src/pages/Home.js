@@ -227,27 +227,27 @@ const Home = () => {
                       <label>
                         <input
                           type="radio"
-                          value={0}
-                          checked={selectedStatus === 0}
-                          onChange={() => handleStatusUpdate(task, 0)}
+                          value={"TO DO"}
+                          checked={selectedStatus === "TO DO"}
+                          onChange={() => handleStatusUpdate(task, "TO DO")}
                         />
                         To Do
                       </label>
                       <label>
                         <input
                           type="radio"
-                          value={1}
-                          checked={selectedStatus === 1}
-                          onChange={() => handleStatusUpdate(task, 1)}
+                          value={"PENDING"}
+                          checked={selectedStatus === "PENDING"}
+                          onChange={() => handleStatusUpdate(task, "PENDING")}
                         />
-                        On Going
+                        Pending
                       </label>
                       <label>
                         <input
                           type="radio"
-                          value={2}
-                          checked={selectedStatus === 2}
-                          onChange={() => handleStatusUpdate(task, 2)}
+                          value={"DONE"}
+                          checked={selectedStatus === "DONE"}
+                          onChange={() => handleStatusUpdate(task, "DONE")}
                         />
                         Done
                       </label>
